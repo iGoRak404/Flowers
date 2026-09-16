@@ -3,7 +3,7 @@ export const STANDALONE_HTML_CODE = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flores Amarillas - Experiencia Interactiva</title>
+  <title>Flores Amarillas</title>
   <!-- Google Fonts: Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -720,7 +720,7 @@ export const STANDALONE_HTML_CODE = `<!DOCTYPE html>
     <div id="login-screen" class="glass-panel">
       <div class="login-icon-box">💐</div>
       <h1 class="login-title">Flores Amarillas</h1>
-      <p class="login-subtitle">Ingresa tus credenciales para recibir tu dedicatoria especial</p>
+      <p class="login-subtitle">Ingresa tus credenciales</p>
 
       <div id="error-message" class="error-box"></div>
 
@@ -729,7 +729,7 @@ export const STANDALONE_HTML_CODE = `<!DOCTYPE html>
           <label class="form-label" for="username-input">Usuario</label>
           <div class="input-wrapper">
             <span class="input-icon">👤</span>
-            <input type="text" id="username-input" class="form-input" placeholder="Tu nombre" autocomplete="username" required>
+            <input type="text" id="username-input" class="form-input" placeholder=" Tu nombre" autocomplete="username" required>
           </div>
         </div>
 
@@ -741,7 +741,7 @@ export const STANDALONE_HTML_CODE = `<!DOCTYPE html>
           </div>
         </div>
 
-        <button type="submit" class="btn-gold" id="btn-submit">Ingresar a mi dedicatoria</button>
+        <button type="submit" class="btn-gold" id="btn-submit">Ingresar</button>
       </form>
     </div>
 
@@ -1346,7 +1346,7 @@ export const STANDALONE_HTML_CODE = `<!DOCTYPE html>
         // Configuración de textos del usuario
         document.getElementById('user-avatar-display').textContent = user.avatar;
         document.getElementById('user-name-header').textContent = user.displayName;
-        document.getElementById('badge-title').textContent = user.badge;
+        document.getElementById('badge-title').textContent = 'Carta de Carlos';
         document.getElementById('user-display-name').textContent = user.displayName;
         document.getElementById('user-message-text').textContent = user.customMessage;
 
