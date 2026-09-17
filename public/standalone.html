@@ -617,6 +617,8 @@
       background: rgba(15, 23, 42, 0.45);
       border-radius: 1rem;
       border: 1px solid rgba(245, 158, 11, 0.2);
+      white-space: pre-line;
+      text-align: left;
     }
 
     @media (min-width: 640px) {
@@ -987,6 +989,23 @@
           <span style="font-size: 1.5rem; color: #fbbf24; font-family: serif; vertical-align: bottom;">”</span>
         </div>
 
+        <!-- Reproductor especial para Keisy: Youth (Lee Know) -->
+        <div id="keisy-player" style="display: none; margin: 1rem 0; padding: 0.85rem; border-radius: 1rem; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); text-align: left;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 1.25rem;">🎵</span>
+              <div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #fde047;">Youth (청춘) · Lee Know (Stray Kids)</div>
+                <div style="font-size: 0.7rem; color: rgba(253, 224, 71, 0.8);">Canción especial elegida para ti</div>
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=NI2NBjZGYfM" target="_blank" rel="noopener noreferrer" style="font-size: 0.72rem; color: #fbbf24; text-decoration: underline;">YouTube ↗</a>
+          </div>
+          <div style="border-radius: 0.75rem; overflow: hidden; position: relative; padding-bottom: 56.25%; height: 0; background: #000;">
+            <iframe id="keisy-iframe" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="" title="Lee Know - Youth" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+
         <div class="dedication-footer-note">
           — Dedicado con todo mi aprecio y los mejores deseos
         </div>
@@ -1010,8 +1029,8 @@
         username: 'leslie',
         password: 'Lasflores123',
         displayName: 'Leslie',
-        badge: '💐 Para Leslie con Todo mi Afecto',
-        customMessage: 'Leslie, entregarte este ramo de flores amarillas es recordarte la luz tan bella, cálida y genuina que irradias cada día. Que tu camino siempre esté colmado de felicidad, serenidad en el alma y que cada uno de tus anhelos florezca con la fuerza y el brillo más hermoso. Eres una persona sumamente especial.',
+        badge: '💐 Carta de Carlos',
+        customMessage: 'Quería darte esta florecita porque te quiero muchísimo y porque quería aprovechar el día para recordarte lo importante que es para mí tu amistad.\n\nSinceramente, haberte conocido ha sido de las mejores cosas que me han pasado. Me alegra mucho haber coincidido contigo y poder compartir momentos, conversaciones, risas y todas esas bobadas que terminan haciendo que una amistad sea especial.\n\nGracias por ser una buena amiga y por todos los momentos que hemos compartido. Espero que hoy tengas un día muy bonito, que sonrías mucho y que recibas todo el cariño que mereces.\n\nY bueno, aquí está tu flor amarilla. No te acostumbres tampoco, que después creen que soy detallista y me toca mantener la reputación JAJAJA.\n\nTe quiero muchísimo, Leslie. Espero que tengas un día increíble.',
         avatar: '💐',
         animMode: 'rain',
         floatStyle: 'sway'
@@ -1020,8 +1039,8 @@
         username: 'ashlie',
         password: 'Lasflores123',
         displayName: 'Ashlie',
-        badge: '✨ Para Ashlie con Admiración y Cariño',
-        customMessage: 'Ashlie, este ramo de flores doradas representa la alegría contagiosa y la dulzura infinita que regalas a quienes te rodean. Que la vida te devuelva multiplicada toda esa magia, llenando tus días de bendiciones, sonrisas radiantes y momentos inolvidables. Te aprecio con todo el corazón.',
+        badge: '✨ Carta de Carlos',
+        customMessage: 'Aunque no llevamos demasiado tiempo de conocernos, siento que conectamos bastante rápido y eso me parece muy chévere. Hay personas con las que cuesta un montón agarrar confianza y otras con las que simplemente todo fluye, y contigo siento que pasó eso.\n\nTodavía nos estamos conociendo y obviamente me faltan muchas cosas por descubrir de ti —tampoco voy a decir que ya sé toda tu historia porque ni que fuera investigador privado JAJAJA—, pero por lo que he conocido hasta ahora, me pareces una persona muy cool y alguien con quien vale la pena seguir compartiendo.\n\nTambién quiero que sepas que si algún día necesitas hablar, desahogarte o simplemente que alguien te escuche, puedes contar conmigo. Todos merecemos sentir que alguien nos escucha y nos comprende, y espero poder ser esa persona para ti cuando lo necesites.\n\nMe alegra mucho haberte conocido y espero que sigamos construyendo una bonita amistad.',
         avatar: '✨',
         animMode: 'flowers',
         floatStyle: 'float'
@@ -1030,8 +1049,8 @@
         username: 'ange',
         password: 'Lasflores123',
         displayName: 'Ange',
-        badge: '🌻 Para Ange con Cariño',
-        customMessage: 'Ange, entregarte estas flores amarillas es recordarte lo inmensamente especial que eres. Que nunca te falte la alegría, que cada día se ilumine con la calidez del sol y que tus sueños florezcan con fuerza infinita.',
+        badge: '🌻 Carta de Carlos',
+        customMessage: 'Quería darte esta florecita porque, siendo sincero, te has ganado un lugar muy especial en mi vida desde que te conocí. Desde ese momento siento que muchas cosas se volvieron un poquito mejores, y no sé en qué momento terminaste ganándote tanto de mi cariño JAJAJA.\n\nTe quiero muchísimo y de verdad eres una persona demasiado especial para mí. Me gusta poder compartir contigo, hablar, reírnos de cualquier bobada y simplemente saber que estás ahí. Puede que no siempre sea el mejor demostrando lo que siento —mi talento para expresar sentimientos claramente está en desarrollo JAJAJA—, pero quiero que sepas que te aprecio muchísimo.\n\nGracias por llegar a mi vida y por ser tú. Espero que tengas un día muy bonito y que esta florecita te recuerde aunque sea un poquito lo mucho que te quiero.',
         avatar: '🌻',
         animMode: 'rain',
         floatStyle: 'sway'
@@ -1040,8 +1059,8 @@
         username: 'keisy',
         password: 'Lasflores123',
         displayName: 'Keisy',
-        badge: '🌼 Para Keisy con Gratitud',
-        customMessage: 'Keisy, te entrego este jardín de flores amarillas con todo mi cariño sincero. Gracias por tu autenticidad, tu sonrisa y la luz tan bella que siempre transmites. Que tu vida esté llena de dicha permanente.',
+        badge: '🌼 Carta de Carlos',
+        customMessage: 'Obviamente tú también tenías que recibir tu florecita, porque aunque a veces nos molestemos, discutamos por cualquier bobada o simplemente nos hagamos la vida imposible JAJAJA, te quiero muchísimo y eres una persona demasiado importante para mí.\n\nMás que mi hermana, muchas veces te siento como mi hermanita, y por eso siempre voy a querer verte bien, apoyarte y estar ahí cuando lo necesites. Hemos compartido muchísimos momentos y, aunque seguramente nunca te lo digo lo suficiente, valoro muchísimo tenerte en mi vida.\n\nGracias por estar ahí, por aguantarme, por las risas, por las conversaciones y hasta por esas pequeñas peleas que después terminan dando risa. Porque claramente una relación de hermanos sin molestarse no sería una relación de hermanos.\n\nPuede que no sea la persona más expresiva del mundo —creo que eso viene bloqueado de fábrica JAJAJA—, pero de verdad te quiero muchísimo y siempre voy a estar para ti.\n\nEspero que tengas un día muy bonito\n\nY recuerda: puedes crecer todo lo que quieras, pero de ahí no creces más JAJAJAJA',
         avatar: '🌼',
         animMode: 'flowers',
         floatStyle: 'float'
@@ -1050,8 +1069,8 @@
         username: 'nata',
         password: 'Lasflores123',
         displayName: 'Nata',
-        badge: '🌻 Para Nata con Cariño y Alegría',
-        customMessage: 'Para Nata, este ramo de flores amarillas llega como un abrazo cálido y sincero. Que tu vida se colme de momentos dorados, sonrisas que iluminen el alma y una dicha inmensa en cada nuevo amanecer. Eres una persona verdaderamente única y especial.',
+        badge: '🌻 Carta de Carlos',
+        customMessage: 'Aunque en realidad no llevamos tantísimo tiempo de conocernos, siento que en poco tiempo te has vuelto alguien bastante especial para mí. Es curioso cómo hay personas con las que uno no necesita años para empezar a tenerles cariño, y tú terminaste siendo una de esas personas.\n\nSé que tampoco hablamos todo el tiempo ni somos de estar hablando 24/7 —porque aparentemente tenemos vidas y cosas que hacer JAJAJA—, pero aun así te has ganado un lugar importante para mí. De cierta forma eres alguien que valoro y cuya presencia me alegra.\n\nQuería darte esta florecita simplemente para recordarte que te quiero mucho y que, aunque quizás no siempre lo demuestre o hablemos demasiado, eres importante para mí. Espero que tengas un día muy bonito y que sigamos conociéndonos y compartiendo más momentos.',
         avatar: '🌻',
         animMode: 'rain',
         floatStyle: 'float'
@@ -1060,8 +1079,8 @@
         username: 'naty',
         password: 'Lasflores123',
         displayName: 'Naty',
-        badge: '🌸 Para Naty con Admiración y Cariño',
-        customMessage: 'Naty, estas flores amarillas van para ti con todo mi cariño y admiración. Tu ternura, dulzura y buena vibra llenan cualquier lugar de calma y alegría sincera. Que la vida te regale infinitas razones para sonreír y que cada día florezcan en ti nuevas bendiciones y momentos mágicos.',
+        badge: '🌸 Carta de Carlos',
+        customMessage: 'Quería darte esta florecita para agradecerte por siempre estar ahí y por ser una persona con la que sé que puedo contar. Te quiero muchísimo y, aunque seas mi prima, para mí siempre has sido como una hermanita.\n\nHemos pasado por un montón de momentos juntos, hemos hablado, nos hemos reído y seguramente también hemos tenido nuestras pequeñas peleas por las bobadas más absurdas JAJAJA, porque obviamente ser familia también incluye molestarse mutuamente.\n\nGracias por estar presente y por todo el cariño que siempre me has dado. Puede que no te lo diga todos los días, pero de verdad valoro muchísimo tenerte en mi vida y espero que siempre podamos seguir contando el uno con el otro.',
         avatar: '🌸',
         animMode: 'flowers',
         floatStyle: 'sway'
@@ -1070,7 +1089,7 @@
         username: 'ronald',
         password: 'Lasflores123',
         displayName: 'Ronald',
-        badge: '🌟 Para Ronald con Éxito y Lealtad',
+        badge: '🌟 Carta de Carlos',
         customMessage: 'Ronald, las flores amarillas son símbolo de lealtad, éxito y energía positiva. Gracias por tu amistad firme y tu apoyo constante. Que la prosperidad y grandes victorias acompañen cada paso que des.',
         avatar: '🌟',
         animMode: 'flowers',
@@ -1350,6 +1369,17 @@
         document.getElementById('user-display-name').textContent = user.displayName;
         document.getElementById('user-message-text').textContent = user.customMessage;
 
+        // Reproductor de música para Keisy (Youth - Lee Know)
+        const keisyPlayer = document.getElementById('keisy-player');
+        const keisyIframe = document.getElementById('keisy-iframe');
+        if (user.username.toLowerCase() === 'keisy') {
+          keisyPlayer.style.display = 'block';
+          keisyIframe.src = 'https://www.youtube-nocookie.com/embed/NI2NBjZGYfM?autoplay=1&playsinline=1';
+        } else {
+          keisyPlayer.style.display = 'none';
+          keisyIframe.src = '';
+        }
+
         // Modo de animación según usuario (mantenido en toda la experiencia)
         setAnimMode(user.animMode);
 
@@ -1391,6 +1421,10 @@
 
     function logout() {
       if (dedicationTimeout) clearTimeout(dedicationTimeout);
+      const keisyPlayer = document.getElementById('keisy-player');
+      const keisyIframe = document.getElementById('keisy-iframe');
+      if (keisyPlayer) keisyPlayer.style.display = 'none';
+      if (keisyIframe) keisyIframe.src = '';
       mainScreen.style.display = 'none';
       document.getElementById('bouquet-stage').style.display = 'flex';
       dedicationCard.style.display = 'none';

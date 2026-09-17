@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { LogOut, Sparkles, Volume2, VolumeX, Code, Heart, Flower2, Mail, RotateCcw } from 'lucide-react';
+import { LogOut, Sparkles, Volume2, VolumeX, Code, Heart, Flower2, Mail, RotateCcw, Music, Play, Pause, ExternalLink } from 'lucide-react';
 import { UserConfig, AnimationType } from '../types';
 import { playFlowerChime, playGentleSparkle } from '../utils/audio';
 import { HeroBouquet } from './HeroBouquet';
@@ -210,6 +210,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
                   naty: 'Carta de Carlos',
                   ange: 'Carta de Carlos',
                   ronald: 'Carta de Carlos',
+                  keisy: 'Carta de Carlos',
                   }[user?.username?.toLowerCase()] || `Carta para ${user?.displayName || 'ti'}`
                   }
               </span>
@@ -231,14 +232,70 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               <div className="w-12 h-px bg-gradient-to-l from-transparent to-amber-400/60" />
             </div>
 
-            {/* Contenido de la Carta / Letra */}
-            <div className="my-4 sm:my-6 p-4 sm:p-6 rounded-2xl bg-slate-900/45 border border-amber-400/20 shadow-inner">
-              <blockquote className="text-sm sm:text-lg text-amber-100/95 font-serif italic leading-relaxed relative">
+            {/* Contenido de la Carta / Letra con párrafos legibles */}
+            <div className="my-4 sm:my-6 p-4 sm:p-7 rounded-2xl bg-slate-900/50 border border-amber-400/25 shadow-inner">
+              <blockquote className="text-sm sm:text-base md:text-lg text-amber-100/95 font-serif italic leading-relaxed relative whitespace-pre-line text-left">
                 <span className="text-3xl sm:text-4xl text-amber-400/40 font-serif absolute -top-4 -left-2">“</span>
                 {user.customMessage}
                 <span className="text-3xl sm:text-4xl text-amber-400/40 font-serif absolute -bottom-6 -right-2">”</span>
               </blockquote>
             </div>
+
+            {/* REPRODUCTOR DE CANCIÓN DEDICADA A KEISY: YOUTH (LEE KNOW) */}
+            {user.username.toLowerCase() === 'keisy' && (
+              <div className="my-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/15 border border-amber-400/40 shadow-xl text-left">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-sm">
+                      <Music className="w-5 h-5 animate-bounce" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm sm:text-base font-bold text-amber-200">Youth (청춘)</span>
+                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/25 text-amber-300 font-semibold border border-amber-400/30">
+                          Lee Know · Stray Kids
+                        </span>
+                      </div>
+                      <span className="text-xs text-amber-300/80 block mt-0.5">
+                        🎵 Canción especial elegida con cariño para ti
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Ecualizador animado */}
+                  <div className="hidden sm:flex items-end gap-1 h-5 px-1">
+                    <span className="w-1 bg-amber-400 rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-3" />
+                    <span className="w-1 bg-yellow-300 rounded-full animate-[pulse_0.5s_ease-in-out_infinite_0.2s] h-5" />
+                    <span className="w-1 bg-amber-400 rounded-full animate-[pulse_0.7s_ease-in-out_infinite_0.4s] h-4" />
+                    <span className="w-1 bg-yellow-400 rounded-full animate-[pulse_0.6s_ease-in-out_infinite_0.1s] h-2" />
+                  </div>
+                </div>
+
+                {/* Reproductor de Video/Audio de Youth */}
+                <div className="w-full rounded-xl overflow-hidden border border-amber-400/25 shadow-md bg-black/60 aspect-video sm:h-56">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube-nocookie.com/embed/NI2NBjZGYfM?autoplay=1&playsinline=1"
+                    title="Lee Know - Youth"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+
+                <div className="flex items-center justify-between mt-2.5 text-[11px] text-amber-300/75">
+                  <span>✨ Si no inicia automáticamente, presiona reproducir en el reproductor</span>
+                  <a
+                    href="https://www.youtube.com/watch?v=NI2NBjZGYfM"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-amber-300 hover:text-white underline transition-colors"
+                  >
+                    <span>Abrir en YouTube</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            )}
 
             <div className="text-xs sm:text-sm text-amber-300/85 font-serif tracking-wide italic mt-3 mb-6">
               — Que la luz y calidez de este día te acompañen siempre en cada paso
