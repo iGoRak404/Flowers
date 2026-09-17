@@ -17,6 +17,11 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
   const isAshlie = user.username.toLowerCase() === 'ashlie';
   const isAnge = user.username.toLowerCase() === 'ange';
   const isKeisy = user.username.toLowerCase() === 'keisy';
+  const isNaty = user.username.toLowerCase() === 'naty';
+  const isNata = user.username.toLowerCase() === 'nata';
+
+  const hasButterfly = isAnge || isKeisy || isLeslie || isNaty || isNata;
+  const hasStar = isAshlie || isKeisy || isNaty || isNata;
 
   // Sonido armonioso de campanitas al florecer
   useEffect(() => {
@@ -262,7 +267,7 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
         </svg>
 
         {/* Detalle mágico especial: Mariposa dorada posada con sutileza */}
-        {(isAnge || isKeisy || isLeslie) && (
+        {hasButterfly && (
           <div className="absolute -top-3 right-6 sm:-top-5 sm:right-10 pointer-events-none transition-transform duration-700 animate-[bounce_3s_ease-in-out_infinite]">
             <span
               className="text-2xl sm:text-3xl filter drop-shadow-[0_0_12px_rgba(250,204,21,0.9)] inline-block transform -rotate-12 transition-transform duration-300 group-hover:scale-125"
@@ -273,12 +278,12 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
           </div>
         )}
 
-        {/* Detalle mágico especial para Ashlie: Estrella celestial resplandeciente */}
-        {isAshlie && (
-          <div className="absolute -top-3 right-6 sm:-top-5 sm:right-10 pointer-events-none transition-transform duration-700 animate-pulse">
+        {/* Detalle mágico especial: Estrella celestial resplandeciente */}
+        {hasStar && (
+          <div className={`absolute ${hasButterfly ? '-top-3 left-6 sm:-top-5 sm:left-10' : '-top-3 right-6 sm:-top-5 sm:right-10'} pointer-events-none transition-transform duration-700 animate-pulse`}>
             <span
               className="text-2xl sm:text-3xl filter drop-shadow-[0_0_16px_rgba(56,189,248,0.95)] inline-block transform rotate-6 transition-transform duration-300 group-hover:scale-125"
-              title="Estrella mágica celestial"
+              title="Estrella mágica resplandeciente"
             >
               ✨
             </span>

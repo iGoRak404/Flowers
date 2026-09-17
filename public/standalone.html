@@ -1072,7 +1072,7 @@
         badge: '🌻 Carta de Carlos',
         customMessage: 'Aunque en realidad no llevamos tantísimo tiempo de conocernos, siento que en poco tiempo te has vuelto alguien bastante especial para mí. Es curioso cómo hay personas con las que uno no necesita años para empezar a tenerles cariño, y tú terminaste siendo una de esas personas.\n\nSé que tampoco hablamos todo el tiempo ni somos de estar hablando 24/7 —porque aparentemente tenemos vidas y cosas que hacer JAJAJA—, pero aun así te has ganado un lugar importante para mí. De cierta forma eres alguien que valoro y cuya presencia me alegra.\n\nQuería darte esta florecita simplemente para recordarte que te quiero mucho y que, aunque quizás no siempre lo demuestre o hablemos demasiado, eres importante para mí. Espero que tengas un día muy bonito y que sigamos conociéndonos y compartiendo más momentos.',
         avatar: '🌻',
-        animMode: 'rain',
+        animMode: 'butterflies_stars_rain',
         floatStyle: 'float'
       },
       {
@@ -1082,7 +1082,7 @@
         badge: '🌸 Carta de Carlos',
         customMessage: 'Quería darte esta florecita para agradecerte por siempre estar ahí y por ser una persona con la que sé que puedo contar. Te quiero muchísimo y, aunque seas mi prima, para mí siempre has sido como una hermanita.\n\nHemos pasado por un montón de momentos juntos, hemos hablado, nos hemos reído y seguramente también hemos tenido nuestras pequeñas peleas por las bobadas más absurdas JAJAJA, porque obviamente ser familia también incluye molestarse mutuamente.\n\nGracias por estar presente y por todo el cariño que siempre me has dado. Puede que no te lo diga todos los días, pero de verdad valoro muchísimo tenerte en mi vida y espero que siempre podamos seguir contando el uno con el otro.',
         avatar: '🌸',
-        animMode: 'flowers',
+        animMode: 'butterflies_stars_flowers',
         floatStyle: 'sway'
       },
       {
@@ -1183,7 +1183,11 @@
       if (currentAnimMode === 'flowers') {
         type = Math.random() < 0.6 ? 'flower' : 'petal';
       } else if (currentAnimMode === 'flowers_butterflies') {
-        type = Math.random() < 0.25 ? 'butterfly' : Math.random() < 0.45 ? 'firefly' : Math.random() < 0.8 ? 'flower' : 'petal';
+        type = Math.random() < 0.22 ? 'butterfly' : Math.random() < 0.40 ? 'firefly' : Math.random() < 0.60 ? 'star' : Math.random() < 0.85 ? 'flower' : 'petal';
+      } else if (currentAnimMode === 'butterflies_stars_rain') {
+        type = Math.random() < 0.25 ? 'butterfly' : Math.random() < 0.45 ? 'firefly' : Math.random() < 0.70 ? 'star' : 'petal';
+      } else if (currentAnimMode === 'butterflies_stars_flowers') {
+        type = Math.random() < 0.22 ? 'butterfly' : Math.random() < 0.40 ? 'firefly' : Math.random() < 0.60 ? 'star' : Math.random() < 0.85 ? 'flower' : 'petal';
       } else if (currentAnimMode === 'rain_butterflies') {
         type = Math.random() < 0.25 ? 'butterfly' : Math.random() < 0.45 ? 'firefly' : 'petal';
       } else if (currentAnimMode === 'butterflies') {
@@ -1397,18 +1401,19 @@
     function renderLoop() {
       ctx.clearRect(0, 0, width, height);
 
-      // Estrellas fugaces para modo celestial (Ashlie)
-      if (currentAnimMode === 'celestial_flowers') {
+      // Lluvia de estrellas fugaces sin lag (Ashlie, Keisy, Nata, Naty)
+      const hasShootingStars = ['celestial_flowers', 'flowers_butterflies', 'butterflies_stars_rain', 'butterflies_stars_flowers'].includes(currentAnimMode);
+      if (hasShootingStars) {
         shootingStarTimer++;
-        if (shootingStarTimer > 150) {
+        if (shootingStarTimer > 55 && shootingStars.length < 10) {
           shootingStarTimer = 0;
           shootingStars.push({
-            x: Math.random() * width * 0.75,
+            x: Math.random() * width * 0.8,
             y: Math.random() * height * 0.35,
-            speed: 13 + Math.random() * 6,
-            angle: Math.PI / 4 + (Math.random() * 0.2 - 0.1),
+            speed: 12 + Math.random() * 6,
+            angle: Math.PI / 4 + (Math.random() * 0.15 - 0.075),
             alpha: 1.0,
-            len: 85 + Math.random() * 85,
+            len: 80 + Math.random() * 80,
             color: Math.random() < 0.35 ? '#38bdf8' : '#fef08a'
           });
         }

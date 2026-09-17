@@ -42,7 +42,7 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Keisy',
     customMessage: 'Obviamente tú también tenías que recibir tu florecita, porque aunque a veces nos molestemos, discutamos por cualquier bobada o simplemente nos hagamos la vida imposible JAJAJA, te quiero muchísimo y eres una persona demasiado importante para mí.\n\nMás que mi hermana, muchas veces te siento como mi hermanita, y por eso siempre voy a querer verte bien, apoyarte y estar ahí cuando lo necesites. Hemos compartido muchísimos momentos y, aunque seguramente nunca te lo digo lo suficiente, valoro muchísimo tenerte en mi vida.\n\nGracias por estar ahí, por aguantarme, por las risas, por las conversaciones y hasta por esas pequeñas peleas que después terminan dando risa. Porque claramente una relación de hermanos sin molestarse no sería una relación de hermanos.\n\nPuede que no sea la persona más expresiva del mundo —creo que eso viene bloqueado de fábrica JAJAJA—, pero de verdad te quiero muchísimo y siempre voy a estar para ti.\n\nEspero que tengas un día muy bonito\n\nY recuerda: puedes crecer todo lo que quieras, pero de ahí no creces más JAJAJAJA',
     animationType: 'spiral_vortex',
-    roleDescription: 'Animación: Vórtice Galáctico de Flores Doradas y Mariposas con canción Youth (Lee Know)',
+    roleDescription: 'Animación: Vórtice Galáctico, Mariposas Doradas y Lluvia de Estrellas con canción Youth',
     avatarSeed: '🌼'
   },
   {
@@ -51,7 +51,7 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Nata',
     customMessage: 'Aunque en realidad no llevamos tantísimo tiempo de conocernos, siento que en poco tiempo te has vuelto alguien bastante especial para mí. Es curioso cómo hay personas con las que uno no necesita años para empezar a tenerles cariño, y tú terminaste siendo una de esas personas.\n\nSé que tampoco hablamos todo el tiempo ni somos de estar hablando 24/7 —porque aparentemente tenemos vidas y cosas que hacer JAJAJA—, pero aun así te has ganado un lugar importante para mí. De cierta forma eres alguien que valoro y cuya presencia me alegra.\n\nQuería darte esta florecita simplemente para recordarte que te quiero mucho y que, aunque quizás no siempre lo demuestre o hablemos demasiado, eres importante para mí. Espero que tengas un día muy bonito y que sigamos conociéndonos y compartiendo más momentos.',
     animationType: 'floating_sparkles',
-    roleDescription: 'Efecto Nata: Ramo radiante de flores amarillas con destellos dorados sutiles',
+    roleDescription: 'Efecto Nata: Ramo radiante de flores amarillas con Mariposas Doradas y Lluvia de Estrellas',
     avatarSeed: '🌻'
   },
   {
@@ -60,7 +60,7 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Naty',
     customMessage: 'Quería darte esta florecita para agradecerte por siempre estar ahí y por ser una persona con la que sé que puedo contar. Te quiero muchísimo y, aunque seas mi prima, para mí siempre has sido como una hermanita.\n\nHemos pasado por un montón de momentos juntos, hemos hablado, nos hemos reído y seguramente también hemos tenido nuestras pequeñas peleas por las bobadas más absurdas JAJAJA, porque obviamente ser familia también incluye molestarse mutuamente.\n\nGracias por estar presente y por todo el cariño que siempre me has dado. Puede que no te lo diga todos los días, pero de verdad valoro muchísimo tenerte en mi vida y espero que siempre podamos seguir contando el uno con el otro.',
     animationType: 'petals_rain',
-    roleDescription: 'Efecto Naty: Lluvia primaveral de pétalos dorados flotantes',
+    roleDescription: 'Efecto Naty: Lluvia primaveral de pétalos con Mariposas Doradas y Lluvia de Estrellas',
     avatarSeed: '🌸'
   },
   {

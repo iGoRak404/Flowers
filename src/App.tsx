@@ -9,6 +9,7 @@ import { GoldenBouquetSVG } from './components/animations/GoldenBouquetSVG';
 import { SpiralVortexCanvas } from './components/animations/SpiralVortexCanvas';
 import { GoldenButterfliesCanvas } from './components/animations/GoldenButterfliesCanvas';
 import { CelestialFlowersCanvas } from './components/animations/CelestialFlowersCanvas';
+import { ShootingStarsRainCanvas } from './components/animations/ShootingStarsRainCanvas';
 import { CodeModal } from './components/CodeModal';
 import { STANDALONE_HTML_CODE } from './data/standaloneHtml';
 import { playFlowerChime } from './utils/audio';
@@ -68,11 +69,15 @@ export default function App() {
           {activeAnimation === 'golden_bouquet' && <FloatingSparklesCanvas interactive={true} />}
           {activeAnimation === 'spiral_vortex' && <SpiralVortexCanvas interactive={true} />}
           {activeAnimation === 'celestial_flowers' && <CelestialFlowersCanvas interactive={true} />}
-          {/* Mariposas doradas: para Ange, y añadidas a Keisy y Leslie manteniendo sus animaciones originales */}
+          {/* Mariposas doradas: para Ange, Keisy, Leslie, Naty y Nata manteniendo sus flores originales */}
           {(activeAnimation === 'golden_butterflies' ||
-            currentUser.username.toLowerCase() === 'keisy' ||
-            currentUser.username.toLowerCase() === 'leslie') && (
+            ['keisy', 'leslie', 'naty', 'nata'].includes(currentUser.username.toLowerCase())) && (
             <GoldenButterfliesCanvas interactive={true} />
+          )}
+
+          {/* Lluvia de estrellas fugaces sin lag: para Keisy, Naty y Nata */}
+          {['keisy', 'naty', 'nata'].includes(currentUser.username.toLowerCase()) && (
+            <ShootingStarsRainCanvas interactive={true} />
           )}
         </>
       ) : (
