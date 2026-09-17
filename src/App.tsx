@@ -75,8 +75,8 @@ export default function App() {
             <GoldenButterfliesCanvas interactive={true} />
           )}
 
-          {/* Lluvia de estrellas fugaces y asteroides sin lag: para Keisy, Naty, Nata, Leslie y Ashlie */}
-          {['keisy', 'naty', 'nata', 'leslie', 'ashlie'].includes(currentUser.username.toLowerCase()) && (
+          {/* Lluvia de estrellas fugaces y asteroides sin lag: para Keisy, Naty, Nata, Leslie, Ashlie y Ange */}
+          {['keisy', 'naty', 'nata', 'leslie', 'ashlie', 'ange'].includes(currentUser.username.toLowerCase()) && (
             <ShootingStarsRainCanvas interactive={true} />
           )}
         </>

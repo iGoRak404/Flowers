@@ -1052,7 +1052,7 @@
         badge: '🦋 Carta de Carlos',
         customMessage: 'Quería darte esta florecita porque, siendo sincero, te has ganado un lugar muy especial en mi vida desde que te conocí. Desde ese momento siento que muchas cosas se volvieron un poquito mejores, y no sé en qué momento terminaste ganándote tanto de mi cariño JAJAJA.\n\nTe quiero muchísimo y de verdad eres una persona demasiado especial para mí. Me gusta poder compartir contigo, hablar, reírnos de cualquier bobada y simplemente saber que estás ahí. Puede que no siempre sea el mejor demostrando lo que siento —mi talento para expresar sentimientos claramente está en desarrollo JAJAJA—, pero quiero que sepas que te aprecio muchísimo.\n\nGracias por llegar a mi vida y por ser tú. Espero que tengas un día muy bonito y que esta florecita te recuerde aunque sea un poquito lo mucho que te quiero.',
         avatar: '🦋',
-        animMode: 'butterflies',
+        animMode: 'butterflies_stars',
         floatStyle: 'sway'
       },
       {
@@ -1192,6 +1192,8 @@
         type = Math.random() < 0.25 ? 'butterfly' : Math.random() < 0.45 ? 'firefly' : 'petal';
       } else if (currentAnimMode === 'butterflies') {
         type = Math.random() < 0.35 ? 'butterfly' : Math.random() < 0.65 ? 'firefly' : 'petal';
+      } else if (currentAnimMode === 'butterflies_stars') {
+        type = Math.random() < 0.30 ? 'butterfly' : Math.random() < 0.50 ? 'firefly' : Math.random() < 0.72 ? 'star' : 'petal';
       } else if (currentAnimMode === 'celestial_flowers') {
         type = Math.random() < 0.45 ? 'flower' : Math.random() < 0.75 ? 'petal' : 'star';
       } else {
@@ -1401,8 +1403,8 @@
     function renderLoop() {
       ctx.clearRect(0, 0, width, height);
 
-      // Lluvia de estrellas fugaces sin lag (Ashlie, Keisy, Nata, Naty)
-      const hasShootingStars = ['celestial_flowers', 'flowers_butterflies', 'butterflies_stars_rain', 'butterflies_stars_flowers'].includes(currentAnimMode);
+      // Lluvia de estrellas fugaces y asteroides sin lag (Ashlie, Keisy, Nata, Naty, Leslie, Ange)
+      const hasShootingStars = ['celestial_flowers', 'flowers_butterflies', 'butterflies_stars_rain', 'butterflies_stars_flowers', 'butterflies_stars', 'butterflies'].includes(currentAnimMode);
       if (hasShootingStars) {
         shootingStarTimer++;
         if (shootingStarTimer > 55 && shootingStars.length < 10) {
