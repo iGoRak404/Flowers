@@ -273,6 +273,18 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
           </div>
         )}
 
+        {/* Detalle mágico especial para Ashlie: Estrella celestial resplandeciente */}
+        {isAshlie && (
+          <div className="absolute -top-3 right-6 sm:-top-5 sm:right-10 pointer-events-none transition-transform duration-700 animate-pulse">
+            <span
+              className="text-2xl sm:text-3xl filter drop-shadow-[0_0_16px_rgba(56,189,248,0.95)] inline-block transform rotate-6 transition-transform duration-300 group-hover:scale-125"
+              title="Estrella mágica celestial"
+            >
+              ✨
+            </span>
+          </div>
+        )}
+
         {/* Pequeña etiqueta de interacción interactiva */}
         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-900/80 backdrop-blur-md border border-amber-300/40 rounded-full px-4 py-1.5 text-xs text-amber-200 flex items-center gap-1.5 shadow-lg group-hover:border-amber-300 group-hover:bg-slate-900 transition-all">
           <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />

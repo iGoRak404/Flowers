@@ -1042,7 +1042,7 @@
         badge: '✨ Carta de Carlos',
         customMessage: 'Aunque no llevamos demasiado tiempo de conocernos, siento que conectamos bastante rápido y eso me parece muy chévere. Hay personas con las que cuesta un montón agarrar confianza y otras con las que simplemente todo fluye, y contigo siento que pasó eso.\n\nTodavía nos estamos conociendo y obviamente me faltan muchas cosas por descubrir de ti —tampoco voy a decir que ya sé toda tu historia porque ni que fuera investigador privado JAJAJA—, pero por lo que he conocido hasta ahora, me pareces una persona muy cool y alguien con quien vale la pena seguir compartiendo.\n\nTambién quiero que sepas que si algún día necesitas hablar, desahogarte o simplemente que alguien te escuche, puedes contar conmigo. Todos merecemos sentir que alguien nos escucha y nos comprende, y espero poder ser esa persona para ti cuando lo necesites.\n\nMe alegra mucho haberte conocido y espero que sigamos construyendo una bonita amistad.',
         avatar: '✨',
-        animMode: 'flowers',
+        animMode: 'celestial_flowers',
         floatStyle: 'float'
       },
       {
@@ -1188,25 +1188,30 @@
         type = Math.random() < 0.25 ? 'butterfly' : Math.random() < 0.45 ? 'firefly' : 'petal';
       } else if (currentAnimMode === 'butterflies') {
         type = Math.random() < 0.35 ? 'butterfly' : Math.random() < 0.65 ? 'firefly' : 'petal';
+      } else if (currentAnimMode === 'celestial_flowers') {
+        type = Math.random() < 0.45 ? 'flower' : Math.random() < 0.75 ? 'petal' : 'star';
       } else {
         type = 'petal';
       }
 
       const isButterfly = type === 'butterfly';
       const isFirefly = type === 'firefly';
+      const isStar = type === 'star';
 
       return {
         x: Math.random() * width,
         y: isButterfly ? height + 20 : isFirefly ? Math.random() * height : -30 - Math.random() * 50,
-        size: isButterfly ? 14 + Math.random() * 8 : isFirefly ? 2 + Math.random() * 2.5 : (currentAnimMode === 'rain' ? 8 + Math.random() * 12 : 14 + Math.random() * 16),
-        speedY: isButterfly ? -0.8 - Math.random() * 1.3 : isFirefly ? -0.2 - Math.random() * 0.4 : 0.8 + Math.random() * 1.6,
+        size: isButterfly ? 14 + Math.random() * 8 : isFirefly ? 2 + Math.random() * 2.5 : isStar ? 5 + Math.random() * 7 : (currentAnimMode === 'rain' ? 8 + Math.random() * 12 : 14 + Math.random() * 16),
+        speedY: isButterfly ? -0.8 - Math.random() * 1.3 : isFirefly ? -0.2 - Math.random() * 0.4 : isStar ? 0.4 + Math.random() * 0.8 : 0.8 + Math.random() * 1.6,
         speedX: -0.6 + Math.random() * 1.2,
         rotation: Math.random() * 360,
         rotationSpeed: isButterfly ? -0.8 + Math.random() * 1.6 : -1.2 + Math.random() * 2.4,
         flip: Math.random() * Math.PI,
         flipSpeed: isButterfly ? 0.15 + Math.random() * 0.1 : 0.02 + Math.random() * 0.04,
-        opacity: isButterfly ? 0.8 + Math.random() * 0.2 : 0.4 + Math.random() * 0.5,
-        color: ['#ffffff', '#fef08a', '#fde047', '#f59e0b', '#fbbf24'][Math.floor(Math.random() * 5)],
+        opacity: isButterfly ? 0.8 + Math.random() * 0.2 : isStar ? 0.7 + Math.random() * 0.3 : 0.4 + Math.random() * 0.5,
+        color: isStar
+          ? ['#ffffff', '#fef08a', '#7dd3fc', '#38bdf8', '#fde047'][Math.floor(Math.random() * 5)]
+          : ['#ffffff', '#fef08a', '#fde047', '#f59e0b', '#fbbf24'][Math.floor(Math.random() * 5)],
         type
       };
     }
@@ -1279,6 +1284,32 @@
       ctx.fillStyle = p.color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawStar(p) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      const twinkle = Math.sin(p.flip);
+      ctx.globalAlpha = Math.max(0.2, p.opacity * (0.6 + twinkle * 0.4));
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 10;
+
+      ctx.beginPath();
+      const rOuter = p.size;
+      const rInner = p.size * 0.25;
+      for (let i = 0; i < 8; i++) {
+        const rad = (i * Math.PI) / 4;
+        const r = i % 2 === 0 ? rOuter : rInner;
+        const px = Math.cos(rad) * r;
+        const py = Math.sin(rad) * r;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
       ctx.fill();
       ctx.restore();
     }
@@ -1360,8 +1391,57 @@
       }
     });
 
+    let shootingStars = [];
+    let shootingStarTimer = 0;
+
     function renderLoop() {
       ctx.clearRect(0, 0, width, height);
+
+      // Estrellas fugaces para modo celestial (Ashlie)
+      if (currentAnimMode === 'celestial_flowers') {
+        shootingStarTimer++;
+        if (shootingStarTimer > 150) {
+          shootingStarTimer = 0;
+          shootingStars.push({
+            x: Math.random() * width * 0.75,
+            y: Math.random() * height * 0.35,
+            speed: 13 + Math.random() * 6,
+            angle: Math.PI / 4 + (Math.random() * 0.2 - 0.1),
+            alpha: 1.0,
+            len: 85 + Math.random() * 85,
+            color: Math.random() < 0.35 ? '#38bdf8' : '#fef08a'
+          });
+        }
+
+        for (let sIdx = shootingStars.length - 1; sIdx >= 0; sIdx--) {
+          const star = shootingStars[sIdx];
+          star.x += Math.cos(star.angle) * star.speed;
+          star.y += Math.sin(star.angle) * star.speed;
+          star.alpha -= 0.016;
+
+          if (star.alpha <= 0 || star.x > width + 50 || star.y > height + 50) {
+            shootingStars.splice(sIdx, 1);
+            continue;
+          }
+
+          ctx.save();
+          ctx.strokeStyle = star.color;
+          ctx.shadowColor = star.color;
+          ctx.shadowBlur = 8;
+          ctx.lineWidth = 1.8;
+          ctx.globalAlpha = Math.max(0, star.alpha);
+          ctx.beginPath();
+          ctx.moveTo(star.x, star.y);
+          ctx.lineTo(star.x - Math.cos(star.angle) * star.len, star.y - Math.sin(star.angle) * star.len);
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -1387,6 +1467,8 @@
           drawButterfly(p);
         } else if (p.type === 'firefly') {
           drawFirefly(p);
+        } else if (p.type === 'star') {
+          drawStar(p);
         } else if (p.type === 'petal') {
           drawPetal(p);
         } else {
@@ -1401,6 +1483,10 @@
           if (p.y < -30) {
             p.y = height + 20;
             p.x = Math.random() * width;
+          }
+        } else if (p.type === 'star') {
+          if (p.y > height + 30 || p.x < -30 || p.x > width + 30) {
+            particles[i] = createParticle();
           }
         } else {
           if (p.y > height + 40 || p.x < -40 || p.x > width + 40) {

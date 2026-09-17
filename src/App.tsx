@@ -8,6 +8,7 @@ import { FloatingSparklesCanvas } from './components/animations/FloatingSparkles
 import { GoldenBouquetSVG } from './components/animations/GoldenBouquetSVG';
 import { SpiralVortexCanvas } from './components/animations/SpiralVortexCanvas';
 import { GoldenButterfliesCanvas } from './components/animations/GoldenButterfliesCanvas';
+import { CelestialFlowersCanvas } from './components/animations/CelestialFlowersCanvas';
 import { CodeModal } from './components/CodeModal';
 import { STANDALONE_HTML_CODE } from './data/standaloneHtml';
 import { playFlowerChime } from './utils/audio';
@@ -66,6 +67,7 @@ export default function App() {
           {activeAnimation === 'floating_sparkles' && <FloatingSparklesCanvas interactive={true} />}
           {activeAnimation === 'golden_bouquet' && <FloatingSparklesCanvas interactive={true} />}
           {activeAnimation === 'spiral_vortex' && <SpiralVortexCanvas interactive={true} />}
+          {activeAnimation === 'celestial_flowers' && <CelestialFlowersCanvas interactive={true} />}
           {/* Mariposas doradas: para Ange, y añadidas a Keisy y Leslie manteniendo sus animaciones originales */}
           {(activeAnimation === 'golden_butterflies' ||
             currentUser.username.toLowerCase() === 'keisy' ||

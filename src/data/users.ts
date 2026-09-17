@@ -23,8 +23,8 @@ export const USERS_CONFIG: UserConfig[] = [
     password: 'Lasflores123',
     displayName: 'Ashlie',
     customMessage: 'Aunque no llevamos demasiado tiempo de conocernos, siento que conectamos bastante rápido y eso me parece muy chévere. Hay personas con las que cuesta un montón agarrar confianza y otras con las que simplemente todo fluye, y contigo siento que pasó eso.\n\nTodavía nos estamos conociendo y obviamente me faltan muchas cosas por descubrir de ti —tampoco voy a decir que ya sé toda tu historia porque ni que fuera investigador privado JAJAJA—, pero por lo que he conocido hasta ahora, me pareces una persona muy cool y alguien con quien vale la pena seguir compartiendo.\n\nTambién quiero que sepas que si algún día necesitas hablar, desahogarte o simplemente que alguien te escuche, puedes contar conmigo. Todos merecemos sentir que alguien nos escucha y nos comprende, y espero poder ser esa persona para ti cuando lo necesites.\n\nMe alegra mucho haberte conocido y espero que sigamos construyendo una bonita amistad.',
-    animationType: 'floating_sparkles',
-    roleDescription: 'Efecto Ashlie: Ramo flotante en levitación suave mientras caen flores luminosas',
+    animationType: 'celestial_flowers',
+    roleDescription: 'Animación Ashlie: Río Celestial de Flores Amarillas, Estrellas Fugaces y Destellos Mágicos',
     avatarSeed: '✨'
   },
   {
