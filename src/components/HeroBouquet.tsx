@@ -15,14 +15,16 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
 
   const isLeslie = user.username.toLowerCase() === 'leslie';
   const isAshlie = user.username.toLowerCase() === 'ashlie';
+  const isAnge = user.username.toLowerCase() === 'ange';
+  const isKeisy = user.username.toLowerCase() === 'keisy';
 
   // Sonido armonioso de campanitas al florecer
   useEffect(() => {
     const timer = setTimeout(() => {
-      playFlowerChime(isLeslie ? 1.15 : isAshlie ? 0.95 : 1.0);
+      playFlowerChime(isLeslie ? 1.15 : isAshlie ? 0.95 : isAnge ? 1.08 : 1.0);
     }, 450);
     return () => clearTimeout(timer);
-  }, [user.username, isLeslie, isAshlie]);
+  }, [user.username, isLeslie, isAshlie, isAnge]);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!interactive) return;
@@ -65,6 +67,8 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
             ? 'bg-amber-400/35 shadow-[0_0_100px_rgba(251,191,36,0.5)]'
             : isAshlie
             ? 'bg-yellow-300/30 shadow-[0_0_100px_rgba(253,224,71,0.45)]'
+            : isAnge
+            ? 'bg-amber-300/35 shadow-[0_0_110px_rgba(252,211,77,0.55)]'
             : 'bg-amber-500/25 shadow-[0_0_80px_rgba(245,158,11,0.4)]'
         }`}
       />
@@ -256,6 +260,18 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
           <circle cx="130" cy="240" r="6" fill="#ffffff" opacity="0.9" />
           <circle cx="390" cy="240" r="6" fill="#ffffff" opacity="0.9" />
         </svg>
+
+        {/* Detalle mágico especial: Mariposa dorada posada con sutileza */}
+        {(isAnge || isKeisy || isLeslie) && (
+          <div className="absolute -top-3 right-6 sm:-top-5 sm:right-10 pointer-events-none transition-transform duration-700 animate-[bounce_3s_ease-in-out_infinite]">
+            <span
+              className="text-2xl sm:text-3xl filter drop-shadow-[0_0_12px_rgba(250,204,21,0.9)] inline-block transform -rotate-12 transition-transform duration-300 group-hover:scale-125"
+              title="Mariposa dorada"
+            >
+              🦋
+            </span>
+          </div>
+        )}
 
         {/* Pequeña etiqueta de interacción interactiva */}
         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-900/80 backdrop-blur-md border border-amber-300/40 rounded-full px-4 py-1.5 text-xs text-amber-200 flex items-center gap-1.5 shadow-lg group-hover:border-amber-300 group-hover:bg-slate-900 transition-all">

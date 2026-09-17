@@ -15,7 +15,7 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Leslie',
     customMessage: 'Quería darte esta florecita porque te quiero muchísimo y porque quería aprovechar el día para recordarte lo importante que es para mí tu amistad.\n\nSinceramente, haberte conocido ha sido de las mejores cosas que me han pasado. Me alegra mucho haber coincidido contigo y poder compartir momentos, conversaciones, risas y todas esas bobadas que terminan haciendo que una amistad sea especial.\n\nGracias por ser una buena amiga y por todos los momentos que hemos compartido. Espero que hoy tengas un día muy bonito, que sonrías mucho y que recibas todo el cariño que mereces.\n\nY bueno, aquí está tu flor amarilla. No te acostumbres tampoco, que después creen que soy detallista y me toca mantener la reputación JAJAJA.\n\nTe quiero muchísimo, Leslie. Espero que tengas un día increíble.',
     animationType: 'golden_bouquet',
-    roleDescription: 'Efecto Leslie: Ramo radiante con destellos dorados y luciérnagas',
+    roleDescription: 'Efecto Leslie: Ramo radiante con destellos dorados, luciérnagas y mariposas luminosas',
     avatarSeed: '💐'
   },
   {
@@ -32,9 +32,9 @@ export const USERS_CONFIG: UserConfig[] = [
     password: 'Lasflores123',
     displayName: 'Ange',
     customMessage: 'Quería darte esta florecita porque, siendo sincero, te has ganado un lugar muy especial en mi vida desde que te conocí. Desde ese momento siento que muchas cosas se volvieron un poquito mejores, y no sé en qué momento terminaste ganándote tanto de mi cariño JAJAJA.\n\nTe quiero muchísimo y de verdad eres una persona demasiado especial para mí. Me gusta poder compartir contigo, hablar, reírnos de cualquier bobada y simplemente saber que estás ahí. Puede que no siempre sea el mejor demostrando lo que siento —mi talento para expresar sentimientos claramente está en desarrollo JAJAJA—, pero quiero que sepas que te aprecio muchísimo.\n\nGracias por llegar a mi vida y por ser tú. Espero que tengas un día muy bonito y que esta florecita te recuerde aunque sea un poquito lo mucho que te quiero.',
-    animationType: 'golden_bouquet',
-    roleDescription: 'Animación: Ramo Dorado Encantado y Luciérnagas',
-    avatarSeed: '🌻'
+    animationType: 'golden_butterflies',
+    roleDescription: 'Animación Ange: Mariposas Doradas Luminosas, Luciérnagas y Polvo de Estrellas',
+    avatarSeed: '🦋'
   },
   {
     username: 'keisy',
@@ -42,7 +42,7 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Keisy',
     customMessage: 'Obviamente tú también tenías que recibir tu florecita, porque aunque a veces nos molestemos, discutamos por cualquier bobada o simplemente nos hagamos la vida imposible JAJAJA, te quiero muchísimo y eres una persona demasiado importante para mí.\n\nMás que mi hermana, muchas veces te siento como mi hermanita, y por eso siempre voy a querer verte bien, apoyarte y estar ahí cuando lo necesites. Hemos compartido muchísimos momentos y, aunque seguramente nunca te lo digo lo suficiente, valoro muchísimo tenerte en mi vida.\n\nGracias por estar ahí, por aguantarme, por las risas, por las conversaciones y hasta por esas pequeñas peleas que después terminan dando risa. Porque claramente una relación de hermanos sin molestarse no sería una relación de hermanos.\n\nPuede que no sea la persona más expresiva del mundo —creo que eso viene bloqueado de fábrica JAJAJA—, pero de verdad te quiero muchísimo y siempre voy a estar para ti.\n\nEspero que tengas un día muy bonito\n\nY recuerda: puedes crecer todo lo que quieras, pero de ahí no creces más JAJAJAJA',
     animationType: 'spiral_vortex',
-    roleDescription: 'Animación: Vórtice Galáctico de Flores Doradas con canción Youth (Lee Know)',
+    roleDescription: 'Animación: Vórtice Galáctico de Flores Doradas y Mariposas con canción Youth (Lee Know)',
     avatarSeed: '🌼'
   },
   {

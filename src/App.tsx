@@ -7,6 +7,7 @@ import { SunflowerBloomSVG } from './components/animations/SunflowerBloomSVG';
 import { FloatingSparklesCanvas } from './components/animations/FloatingSparklesCanvas';
 import { GoldenBouquetSVG } from './components/animations/GoldenBouquetSVG';
 import { SpiralVortexCanvas } from './components/animations/SpiralVortexCanvas';
+import { GoldenButterfliesCanvas } from './components/animations/GoldenButterfliesCanvas';
 import { CodeModal } from './components/CodeModal';
 import { STANDALONE_HTML_CODE } from './data/standaloneHtml';
 import { playFlowerChime } from './utils/audio';
@@ -65,6 +66,12 @@ export default function App() {
           {activeAnimation === 'floating_sparkles' && <FloatingSparklesCanvas interactive={true} />}
           {activeAnimation === 'golden_bouquet' && <FloatingSparklesCanvas interactive={true} />}
           {activeAnimation === 'spiral_vortex' && <SpiralVortexCanvas interactive={true} />}
+          {/* Mariposas doradas: para Ange, y añadidas a Keisy y Leslie manteniendo sus animaciones originales */}
+          {(activeAnimation === 'golden_butterflies' ||
+            currentUser.username.toLowerCase() === 'keisy' ||
+            currentUser.username.toLowerCase() === 'leslie') && (
+            <GoldenButterfliesCanvas interactive={true} />
+          )}
         </>
       ) : (
         // En el login mostramos una lluvia suave y sutil de pétalos de bienvenida reactiva al mouse

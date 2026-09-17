@@ -3,7 +3,8 @@ export type AnimationType =
   | 'sunflower_bloom'
   | 'floating_sparkles'
   | 'golden_bouquet'
-  | 'spiral_vortex';
+  | 'spiral_vortex'
+  | 'golden_butterflies';
 
 export interface UserConfig {
   username: string;
