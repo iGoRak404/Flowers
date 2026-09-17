@@ -21,7 +21,7 @@ export const HeroBouquet: React.FC<HeroBouquetProps> = ({ user, interactive = tr
   const isNata = user.username.toLowerCase() === 'nata';
 
   const hasButterfly = isAnge || isKeisy || isLeslie || isNaty || isNata;
-  const hasStar = isAshlie || isKeisy || isNaty || isNata;
+  const hasStar = isAshlie || isKeisy || isNaty || isNata || isLeslie;
 
   // Sonido armonioso de campanitas al florecer
   useEffect(() => {
