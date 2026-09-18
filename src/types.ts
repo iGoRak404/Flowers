@@ -5,7 +5,10 @@ export type AnimationType =
   | 'golden_bouquet'
   | 'spiral_vortex'
   | 'golden_butterflies'
-  | 'celestial_flowers';
+  | 'celestial_flowers'
+  | 'aurora_flowers'
+  | 'crystal_petals'
+  | 'sunburst_dandelions';
 
 export interface UserConfig {
   username: string;

@@ -9,6 +9,9 @@ import { GoldenBouquetSVG } from './components/animations/GoldenBouquetSVG';
 import { SpiralVortexCanvas } from './components/animations/SpiralVortexCanvas';
 import { GoldenButterfliesCanvas } from './components/animations/GoldenButterfliesCanvas';
 import { CelestialFlowersCanvas } from './components/animations/CelestialFlowersCanvas';
+import { AuroraFlowersCanvas } from './components/animations/AuroraFlowersCanvas';
+import { CrystalPetalsCanvas } from './components/animations/CrystalPetalsCanvas';
+import { SunburstDandelionsCanvas } from './components/animations/SunburstDandelionsCanvas';
 import { ShootingStarsRainCanvas } from './components/animations/ShootingStarsRainCanvas';
 import { CodeModal } from './components/CodeModal';
 import { STANDALONE_HTML_CODE } from './data/standaloneHtml';
@@ -73,14 +76,17 @@ export default function App() {
           {activeAnimation === 'golden_bouquet' && <FloatingSparklesCanvas interactive={true} />}
           {activeAnimation === 'spiral_vortex' && <SpiralVortexCanvas interactive={true} />}
           {activeAnimation === 'celestial_flowers' && <CelestialFlowersCanvas interactive={true} />}
-          {/* Mariposas doradas: para Ange, Keisy, Leslie, Naty y Nata manteniendo sus flores originales */}
+          {activeAnimation === 'aurora_flowers' && <AuroraFlowersCanvas interactive={true} />}
+          {activeAnimation === 'crystal_petals' && <CrystalPetalsCanvas interactive={true} />}
+          {activeAnimation === 'sunburst_dandelions' && <SunburstDandelionsCanvas interactive={true} />}
+          {/* Mariposas doradas: para Ange, Keisy, Leslie, Naty, Nata, Siel, Julieth y Skarlet */}
           {(activeAnimation === 'golden_butterflies' ||
-            ['keisy', 'leslie', 'naty', 'nata'].includes(currentUser.username.toLowerCase())) && (
+            ['keisy', 'leslie', 'naty', 'nata', 'siel', 'julieth', 'skarlet'].includes(currentUser.username.toLowerCase())) && (
             <GoldenButterfliesCanvas interactive={true} />
           )}
 
-          {/* Lluvia de estrellas fugaces y asteroides sin lag: para Keisy, Naty, Nata, Leslie, Ashlie y Ange */}
-          {['keisy', 'naty', 'nata', 'leslie', 'ashlie', 'ange'].includes(currentUser.username.toLowerCase()) && (
+          {/* Lluvia de estrellas fugaces y asteroides sin lag: para perfiles con temática mágica */}
+          {['keisy', 'naty', 'nata', 'leslie', 'ashlie', 'ange', 'siel', 'julieth', 'skarlet'].includes(currentUser.username.toLowerCase()) && (
             <ShootingStarsRainCanvas interactive={true} />
           )}
         </>

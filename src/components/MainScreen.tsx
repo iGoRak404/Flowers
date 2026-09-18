@@ -23,6 +23,30 @@ interface SparkleParticle {
   color: string;
 }
 
+// Configuración de música personalizada automática para perfiles específicos (100% original, MP3 local sin anuncios)
+const PROFILE_SONGS: Record<string, { title: string; artist: string; src: string }> = {
+  keisy: {
+    title: 'Youth (청춘)',
+    artist: 'Lee Know · Stray Kids',
+    src: '/assets/audio/youth_stray_kids.mp3',
+  },
+  naty: {
+    title: 'Could Have Been Me',
+    artist: 'Halsey (Porsha) · Sing 2',
+    src: '/assets/audio/could_have_been_me_sing2.mp3',
+  },
+  leslie: {
+    title: 'Mockingbird',
+    artist: 'Eminem',
+    src: '/assets/audio/mockingbird_eminem.mp3',
+  },
+  skarlet: {
+    title: 'Lugar Seguro',
+    artist: 'Jay Wheeler ft. Noreh',
+    src: '/assets/audio/lugar_seguro_jay_wheeler.mp3',
+  },
+};
+
 export const MainScreen: React.FC<MainScreenProps> = ({
   user,
   onLogout,
@@ -35,13 +59,16 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   const nextParticleId = useRef(0);
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
-  // Reproducción automática de fondo en MP3 para Keisy (ad-free)
+  // Canción personalizada asignada al perfil actual (si existe)
+  const activeSong = PROFILE_SONGS[user.username.toLowerCase()];
+
+  // Reproducción automática de fondo en MP3 local (ad-free)
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  // Reproducción automática de audio MP3 al ingresar al perfil de Keisy
+  // Reproducción automática de audio MP3 al ingresar al perfil con canción asignada
   useEffect(() => {
-    if (user.username.toLowerCase() !== 'keisy') return;
+    if (!activeSong) return;
 
     let isCancelled = false;
     const audio = audioRef.current;
@@ -88,18 +115,18 @@ export const MainScreen: React.FC<MainScreenProps> = ({
         audio.currentTime = 0;
       }
     };
-  }, [user.username]);
+  }, [user.username, activeSong]);
 
   // Sincronización continua con el interruptor general de sonido
   useEffect(() => {
-    if (audioRef.current && user.username.toLowerCase() === 'keisy') {
+    if (audioRef.current && activeSong) {
       audioRef.current.muted = !soundEnabled;
       audioRef.current.volume = soundEnabled ? 1 : 0;
       if (soundEnabled && audioRef.current.paused) {
         audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
       }
     }
-  }, [soundEnabled, user.username]);
+  }, [soundEnabled, activeSong]);
 
   // Función universal para iniciar o reiniciar la secuencia
   const runSequence = () => {
@@ -282,17 +309,17 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               </blockquote>
             </div>
 
-            {/* MÚSICA AUTOMÁTICA PARA KEISY: Youth (Lee Know · Stray Kids) */}
-            {user.username.toLowerCase() === 'keisy' && (
+            {/* MÚSICA AUTOMÁTICA EN SEGUNDO PLANO (Keisy, Naty, Skarlet) */}
+            {activeSong && (
               <div
-                id="keisy-player"
+                id="profile-music-player"
                 className="my-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/15 border border-amber-400/35 shadow-lg flex items-center justify-between gap-3 text-left"
               >
-                {/* Elemento de audio nativo con reproducción automática en segundo plano */}
+                {/* Elemento de audio nativo con reproducción automática sin anuncios */}
                 <audio
                   ref={audioRef}
-                  id="keisy-audio-element"
-                  src="/assets/audio/youth_stray_kids.mp3"
+                  id="profile-audio-element"
+                  src={activeSong.src}
                   autoPlay
                   loop
                   preload="auto"
@@ -306,9 +333,9 @@ export const MainScreen: React.FC<MainScreenProps> = ({
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm sm:text-base font-bold text-amber-200 truncate">Youth (청춘)</span>
+                      <span className="text-sm sm:text-base font-bold text-amber-200 truncate">{activeSong.title}</span>
                       <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400/25 text-amber-300 font-semibold border border-amber-400/30 shrink-0">
-                        Lee Know · Stray Kids
+                        {activeSong.artist}
                       </span>
                     </div>
                   </div>

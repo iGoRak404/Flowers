@@ -15,7 +15,7 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Leslie',
     customMessage: 'Quería darte esta florecita porque te quiero muchísimo y porque quería aprovechar el día para recordarte lo importante que es para mí tu amistad.\n\nSinceramente, haberte conocido ha sido de las mejores cosas que me han pasado. Me alegra mucho haber coincidido contigo y poder compartir momentos, conversaciones, risas y todas esas bobadas que terminan haciendo que una amistad sea especial.\n\nGracias por ser una buena amiga y por todos los momentos que hemos compartido. Espero que hoy tengas un día muy bonito, que sonrías mucho y que recibas todo el cariño que mereces.\n\nY bueno, aquí está tu flor amarilla. No te acostumbres tampoco, que después creen que soy detallista y me toca mantener la reputación JAJAJA.\n\nTe quiero muchísimo, Leslie. Espero que tengas un día increíble.',
     animationType: 'golden_bouquet',
-    roleDescription: 'Efecto Leslie: Ramo radiante con destellos dorados, mariposas luminosas y lluvia de asteroides',
+    roleDescription: 'Efecto Leslie: Ramo radiante con destellos dorados, mariposas luminosas y canción Mockingbird (Eminem)',
     avatarSeed: '💐'
   },
   {
@@ -60,8 +60,35 @@ export const USERS_CONFIG: UserConfig[] = [
     displayName: 'Naty',
     customMessage: 'Quería darte esta florecita para agradecerte por siempre estar ahí y por ser una persona con la que sé que puedo contar. Te quiero muchísimo y, aunque seas mi prima, para mí siempre has sido como una hermanita.\n\nHemos pasado por un montón de momentos juntos, hemos hablado, nos hemos reído y seguramente también hemos tenido nuestras pequeñas peleas por las bobadas más absurdas JAJAJA, porque obviamente ser familia también incluye molestarse mutuamente.\n\nGracias por estar presente y por todo el cariño que siempre me has dado. Puede que no te lo diga todos los días, pero de verdad valoro muchísimo tenerte en mi vida y espero que siempre podamos seguir contando el uno con el otro.',
     animationType: 'petals_rain',
-    roleDescription: 'Efecto Naty: Lluvia primaveral de pétalos con Mariposas Doradas y Lluvia de Estrellas',
+    roleDescription: 'Efecto Naty: Lluvia primaveral de pétalos con canción Could Have Been Me (Sing 2)',
     avatarSeed: '🌸'
+  },
+  {
+    username: 'siel',
+    password: 'Lasflores123',
+    displayName: 'Siel',
+    customMessage: 'Quería darte esta florecita amarilla para alegrarte el día y recordarte lo mucho que valoro tenerte presente. A veces el día a día se llena de carreras y prisas, pero siempre es bueno detenerse un segundo para agradecer a las personas que con su energía, su risa o sus ocurrencias hacen todo más agradable y bonito.\n\nGracias por tu buena vibra, por ser una persona auténtica y por compartir momentos tan bacanos. Espero de corazón que hoy recibas toneladas de sonrisas, que te consientan un montón y que este detalle te saque una buena sonrisa.\n\n¡Feliz día de las flores amarillas, Siel! Que nunca te falten motivos para brillar.',
+    animationType: 'aurora_flowers',
+    roleDescription: 'Animación Siel: Aurora Floral Dorada, Bruma de Luz y Dientes de León Flotantes',
+    avatarSeed: '🌟'
+  },
+  {
+    username: 'julieth',
+    password: 'Lasflores123',
+    displayName: 'Julieth',
+    customMessage: 'No podía dejar pasar este día sin entregarte tu flor amarilla. Eres de esas personas que irradian una luz única y cuya compañía siempre se siente cálida y sincera.\n\nQuería aprovechar este detalle para agradecerte por tu cariño, por las risas compartidas y por ser alguien en quien se puede confiar y con quien da gusto hablar de todo un poco. Las personas especiales merecen momentos especiales, y tú sin duda eres una de ellas.\n\nEspero que disfrutes muchísimo este día, que la vida te siga llenando de bendiciones y cosas maravillosas. ¡Un abrazo gigante y feliz día de las flores amarillas, Julieth!',
+    animationType: 'crystal_petals',
+    roleDescription: 'Animación Julieth: Cristales Florales Dorados, Mandalas Luminosos y Destellos',
+    avatarSeed: '💐'
+  },
+  {
+    username: 'skarlet',
+    password: 'Lasflores123',
+    displayName: 'Skarlet',
+    customMessage: 'Quería darte esta flor amarilla porque eres una persona sumamente especial para mí. Hay personas que llegan y sin hacer mucho ruido se convierten en un refugio, en esa calma en medio del caos y en alguien con quien uno simplemente se siente en paz... exactamente como un lugar seguro.\n\nTe agradezco infinitamente por tu dulzura, por cada conversación, por tus risas y por estar presente incluso en los pequeños momentos que terminan significando tanto. Valoro con el alma tenerte cerca y poder compartir contigo.\n\nEspero que esta canción y esta flor te recuerden lo mucho que te aprecio y lo valiosa que eres. Que tengas un día tan hermoso y radiante como tú, Skarlet.',
+    animationType: 'sunburst_dandelions',
+    roleDescription: 'Animación Skarlet: Dientes de León Dorados y Pulsos Solares con canción Lugar Seguro',
+    avatarSeed: '💛'
   },
   {
     username: 'ronald',
@@ -99,5 +126,30 @@ export const ANIMATION_DETAILS: Record<string, { title: string; subtitle: string
     title: 'Flores & Destellos',
     subtitle: 'Flores flotantes luminosas con efecto bokeh y partículas mágicas',
     icon: '✨'
+  },
+  golden_butterflies: {
+    title: 'Mariposas Doradas',
+    subtitle: 'Aleteo mágico de mariposas luminosas y luciérnagas áureas',
+    icon: '🦋'
+  },
+  celestial_flowers: {
+    title: 'Río Celestial',
+    subtitle: 'Flores cósmicas con estelas astrales y estrellas fugaces',
+    icon: '🌠'
+  },
+  aurora_flowers: {
+    title: 'Aurora Floral Dorada',
+    subtitle: 'Onda sinusoidal de luz cálida y dientes de león flotantes',
+    icon: '✨'
+  },
+  crystal_petals: {
+    title: 'Cristales Florales',
+    subtitle: 'Pétalos geométricos de cristal dorado con destellos prismáticos',
+    icon: '💎'
+  },
+  sunburst_dandelions: {
+    title: 'Dientes de León Solares',
+    subtitle: 'Semillas etéreas que danzan en el viento con pulsos de sol',
+    icon: '🌼'
   }
 };
