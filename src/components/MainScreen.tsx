@@ -35,11 +35,11 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   const nextParticleId = useRef(0);
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
-  // Audio automático de fondo para Keisy (ad-free)
+  // Reproducción automática de fondo en MP3 para Keisy (ad-free)
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  // Reproducción automática de audio al ingresar al perfil de Keisy
+  // Reproducción automática de audio MP3 al ingresar al perfil de Keisy
   useEffect(() => {
     if (user.username.toLowerCase() !== 'keisy') return;
 
@@ -47,7 +47,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     const audio = audioRef.current;
     if (!audio) return;
 
-    // Sincronizar estado inicial de volumen y silencio
+    // Sincronizar estado inicial de volumen y silencio con el botón de sonido general
     audio.muted = !soundEnabled;
     audio.volume = soundEnabled ? 1 : 0;
 
@@ -61,7 +61,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
             }
           })
           .catch(() => {
-            // Si las políticas de autoplay del navegador requieren un toque inicial
+            // Si las políticas de autoplay del navegador requieren un toque o interacción inicial
             const playOnFirstTouch = () => {
               if (audioRef.current && !isCancelled) {
                 audioRef.current.muted = !soundEnabled;
@@ -90,7 +90,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     };
   }, [user.username]);
 
-  // Sincronización continua de silencio con el control general de sonido
+  // Sincronización continua con el interruptor general de sonido
   useEffect(() => {
     if (audioRef.current && user.username.toLowerCase() === 'keisy') {
       audioRef.current.muted = !soundEnabled;
@@ -133,9 +133,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     runSequence();
     return () => {
       timeoutsRef.current.forEach(clearTimeout);
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
     };
   }, [user.username]);
 
@@ -285,13 +282,13 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               </blockquote>
             </div>
 
-            {/* REPRODUCCIÓN AUTOMÁTICA DE MÚSICA DE FONDO PARA KEISY (SIN BOTÓN DE PLAY/PAUSA) */}
+            {/* MÚSICA AUTOMÁTICA PARA KEISY: Youth (Lee Know · Stray Kids) */}
             {user.username.toLowerCase() === 'keisy' && (
               <div
-                id="keisy-auto-player"
+                id="keisy-player"
                 className="my-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/15 border border-amber-400/35 shadow-lg flex items-center justify-between gap-3 text-left"
               >
-                {/* Elemento de audio nativo configurado para reproducirse automáticamente con la canción completa */}
+                {/* Elemento de audio nativo con reproducción automática en segundo plano */}
                 <audio
                   ref={audioRef}
                   id="keisy-audio-element"
@@ -310,18 +307,15 @@ export const MainScreen: React.FC<MainScreenProps> = ({
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm sm:text-base font-bold text-amber-200 truncate">Youth (청춘)</span>
-                      <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/25 text-amber-300 font-semibold border border-amber-400/30 shrink-0">
+                      <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400/25 text-amber-300 font-semibold border border-amber-400/30 shrink-0">
                         Lee Know · Stray Kids
                       </span>
                     </div>
-                    <span className="text-xs text-amber-300/80 block mt-0.5 truncate">
-                      ✨ Canción completa sonando automáticamente para ti
-                    </span>
                   </div>
                 </div>
 
-                {/* Ecualizador visual animado que baila con la música de fondo */}
-                <div className="flex items-end gap-1 h-5 px-1 shrink-0" title="Música reproduciéndose de fondo">
+                {/* Ecualizador visual animado que baila con la música */}
+                <div className="flex items-end gap-1 h-5 px-1 shrink-0" title="Música sonando automáticamente">
                   <span className={`w-1 bg-amber-400 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.8s_ease-in-out_infinite] h-3.5' : 'h-1.5 opacity-40'}`} />
                   <span className={`w-1 bg-yellow-300 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.5s_ease-in-out_infinite_0.2s] h-5' : 'h-2 opacity-40'}`} />
                   <span className={`w-1 bg-amber-400 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.7s_ease-in-out_infinite_0.4s] h-4' : 'h-1.5 opacity-40'}`} />
