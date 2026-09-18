@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { playGentleSparkle } from '../../utils/audio';
+import { playGentleSparkle, isGlobalMuted } from '../../utils/audio';
 
 interface FloatingSparklesCanvasProps {
   interactive?: boolean;
@@ -43,16 +43,21 @@ export const FloatingSparklesCanvas: React.FC<FloatingSparklesCanvasProps> = ({ 
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = window.innerWidth < 640;
 
+    let resizeTimer: NodeJS.Timeout | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, 120);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    // Flores flotantes
-    const flowersCount = Math.min(Math.floor((width * height) / 38000), 28);
+    // Flores flotantes (adaptado a móvil)
+    const flowersCount = isMobile ? 8 : Math.min(Math.floor((width * height) / 38000), 22);
     const yellowTones = ['#fbbf24', '#f59e0b', '#fde047', '#facc15', '#fef08a'];
 
     const createFlower = (startY?: number): FloatingFlower => {
@@ -215,8 +220,10 @@ export const FloatingSparklesCanvas: React.FC<FloatingSparklesCanvasProps> = ({ 
         ctx.save();
         ctx.globalAlpha = s.alpha;
         ctx.fillStyle = s.color;
-        ctx.shadowColor = '#f59e0b';
-        ctx.shadowBlur = 8;
+        if (!isMobile) {
+          ctx.shadowColor = '#f59e0b';
+          ctx.shadowBlur = 6;
+        }
 
         // Dibujar forma de estrella de 4 puntas para destello brillante
         ctx.translate(s.x, s.y);
@@ -238,7 +245,7 @@ export const FloatingSparklesCanvas: React.FC<FloatingSparklesCanvasProps> = ({ 
 
     const addTrailSparkle = (clientX: number, clientY: number) => {
       if (!interactive) return;
-      if (Math.random() < 0.45) {
+      if (Math.random() < 0.35 && sparkles.length < (isMobile ? 15 : 45)) {
         sparkles.push({
           x: clientX,
           y: clientY,
@@ -254,17 +261,20 @@ export const FloatingSparklesCanvas: React.FC<FloatingSparklesCanvasProps> = ({ 
 
     const plantFlowerBurst = (clientX: number, clientY: number) => {
       if (!interactive) return;
-      playGentleSparkle();
+      if (!isGlobalMuted()) {
+        playGentleSparkle();
+      }
 
       const newFl = createFlower(clientY);
       newFl.x = clientX;
-      newFl.size = 26 + Math.random() * 14;
-      newFl.goldenGlow = 30;
+      newFl.size = 24 + Math.random() * 10;
+      newFl.goldenGlow = isMobile ? 10 : 25;
       flowers.push(newFl);
 
-      for (let i = 0; i < 16; i++) {
-        const ang = (Math.PI * 2 * i) / 16;
-        const spd = 2 + Math.random() * 3.5;
+      const burstCount = isMobile ? 6 : 14;
+      for (let i = 0; i < burstCount; i++) {
+        const ang = (Math.PI * 2 * i) / burstCount;
+        const spd = 2 + Math.random() * 3;
         sparkles.push({
           x: clientX,
           y: clientY,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { playGentleSparkle } from '../../utils/audio';
+import { playGentleSparkle, isGlobalMuted } from '../../utils/audio';
 
 interface GoldenButterfliesCanvasProps {
   interactive?: boolean;
@@ -73,13 +73,18 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = window.innerWidth < 640;
 
+    let resizeTimer: NodeJS.Timeout | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, 120);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     const butterflyPalettes = [
       { colors: ['#ffffff', '#fef08a', '#facc15', '#eab308', '#ca8a04'], glow: '#facc15' },
@@ -112,12 +117,12 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
       };
     };
 
-    // Cantidad equilibrada de mariposas
-    const butterflyCount = width < 640 ? 7 : 12;
+    // Cantidad equilibrada de mariposas (reducida en móvil para evitar sobrecarga de GPU)
+    const butterflyCount = isMobile ? 3 : 8;
     butterfliesRef.current = Array.from({ length: butterflyCount }, () => createButterfly());
 
     // Luciérnagas doradas danzantes
-    const fireflyCount = width < 640 ? 25 : 45;
+    const fireflyCount = isMobile ? 8 : 24;
     firefliesRef.current = Array.from({ length: fireflyCount }, () => {
       const bx = Math.random() * width;
       const by = Math.random() * height;
@@ -191,27 +196,29 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
 
     const handlePointerDown = (e: PointerEvent) => {
       if (!interactive) return;
-      playGentleSparkle();
+      if (!isGlobalMuted()) {
+        playGentleSparkle();
+      }
 
       // Al tocar la pantalla, nace una mariposa dorada y una explosión de destellos mágicos
       const clickX = e.clientX;
       const clickY = e.clientY;
 
-      addStardust(clickX, clickY, 16, true, 30, -1.2);
-      addStardust(clickX, clickY, 20, false, 40, -0.8);
+      const burstCount = isMobile ? 6 : 14;
+      addStardust(clickX, clickY, burstCount, true, 20, -1.0);
 
-      if (butterfliesRef.current.length < 24) {
+      if (butterfliesRef.current.length < (isMobile ? 5 : 18)) {
         const newB = createButterfly(clickX, clickY, true);
-        newB.vx = (Math.random() - 0.5) * 3;
-        newB.vy = -2 - Math.random() * 2;
+        newB.vx = (Math.random() - 0.5) * 2;
+        newB.vy = -1.5 - Math.random() * 1.5;
         butterfliesRef.current.push(newB);
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('pointerup', handlePointerUp);
-    window.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointerup', handlePointerUp, { passive: true });
+    window.addEventListener('pointerdown', handlePointerDown, { passive: true });
 
     // Dibujar mariposa
     const drawButterfly = (b: Butterfly) => {
@@ -222,9 +229,11 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
       // Aleteo sinusoidal natural (3D perspective flap)
       const flapScaleX = Math.cos(b.flapPhase);
 
-      // Resplandor áureo envolvente
-      ctx.shadowColor = b.glow;
-      ctx.shadowBlur = 14;
+      // Resplandor áureo envolvente (desactivar shadowBlur costoso en celular para 60 FPS)
+      if (!isMobile) {
+        ctx.shadowColor = b.glow;
+        ctx.shadowBlur = 10;
+      }
 
       const wingSize = b.size;
 
@@ -341,8 +350,10 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
         if (pulseAlpha > 0.05) {
           ctx.save();
           ctx.globalAlpha = Math.max(0, Math.min(1, pulseAlpha));
-          ctx.shadowColor = ff.color;
-          ctx.shadowBlur = 12;
+          if (!isMobile) {
+            ctx.shadowColor = ff.color;
+            ctx.shadowBlur = 10;
+          }
           ctx.fillStyle = ff.color;
           ctx.beginPath();
           ctx.arc(ff.x, ff.y, ff.radius, 0, Math.PI * 2);
@@ -351,7 +362,7 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
           // Resplandor exterior difuso
           ctx.fillStyle = 'rgba(254, 240, 138, 0.2)';
           ctx.beginPath();
-          ctx.arc(ff.x, ff.y, ff.radius * 3, 0, Math.PI * 2);
+          ctx.arc(ff.x, ff.y, ff.radius * 2.5, 0, Math.PI * 2);
           ctx.fill();
           ctx.restore();
         }
@@ -378,8 +389,10 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
         if (s.isPetal) {
           // Pétalo de flor dorada
           ctx.fillStyle = s.color;
-          ctx.shadowColor = '#f59e0b';
-          ctx.shadowBlur = 6;
+          if (!isMobile) {
+            ctx.shadowColor = '#f59e0b';
+            ctx.shadowBlur = 4;
+          }
           ctx.beginPath();
           ctx.moveTo(0, -s.size);
           ctx.bezierCurveTo(s.size * 0.7, -s.size * 0.4, s.size * 0.7, s.size * 0.5, 0, s.size);
@@ -388,8 +401,10 @@ export const GoldenButterfliesCanvas: React.FC<GoldenButterfliesCanvasProps> = (
         } else {
           // Estrellita / chispa radiante de 4 puntas
           ctx.fillStyle = s.color;
-          ctx.shadowColor = s.color;
-          ctx.shadowBlur = 8;
+          if (!isMobile) {
+            ctx.shadowColor = s.color;
+            ctx.shadowBlur = 6;
+          }
           ctx.beginPath();
           ctx.moveTo(0, -s.size);
           ctx.quadraticCurveTo(0, 0, s.size, 0);

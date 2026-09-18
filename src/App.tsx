@@ -12,7 +12,7 @@ import { CelestialFlowersCanvas } from './components/animations/CelestialFlowers
 import { ShootingStarsRainCanvas } from './components/animations/ShootingStarsRainCanvas';
 import { CodeModal } from './components/CodeModal';
 import { STANDALONE_HTML_CODE } from './data/standaloneHtml';
-import { playFlowerChime } from './utils/audio';
+import { playFlowerChime, setGlobalMuted } from './utils/audio';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<UserConfig | null>(null);
@@ -49,7 +49,11 @@ export default function App() {
   };
 
   const handleToggleSound = () => {
-    setSoundEnabled((prev) => !prev);
+    setSoundEnabled((prev) => {
+      const next = !prev;
+      setGlobalMuted(!next);
+      return next;
+    });
   };
 
   return (

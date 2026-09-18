@@ -1,24 +1,50 @@
 /**
- * Generador de sonido sutil con Web Audio API pura
- * No requiere archivos externos de audio ni descargas
+ * Generador y controlador de sonido con Web Audio API pura
+ * Control de silencio global y compatibilidad con elementos de audio HTML
  */
 let audioCtx: AudioContext | null = null;
+let isMutedGlobally = false;
+const muteListeners = new Set<(muted: boolean) => void>();
+
+export function setGlobalMuted(muted: boolean) {
+  isMutedGlobally = muted;
+  if (audioCtx) {
+    if (muted && audioCtx.state === 'running') {
+      audioCtx.suspend().catch(() => {});
+    } else if (!muted && audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(() => {});
+    }
+  }
+  muteListeners.forEach((fn) => fn(muted));
+}
+
+export function isGlobalMuted(): boolean {
+  return isMutedGlobally;
+}
+
+export function subscribeMuteState(callback: (muted: boolean) => void): () => void {
+  muteListeners.add(callback);
+  return () => {
+    muteListeners.delete(callback);
+  };
+}
 
 function getAudioContext(): AudioContext | null {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === 'undefined' || isMutedGlobally) return null;
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (AudioContextClass) {
       audioCtx = new AudioContextClass();
     }
   }
-  if (audioCtx && audioCtx.state === 'suspended') {
+  if (audioCtx && audioCtx.state === 'suspended' && !isMutedGlobally) {
     audioCtx.resume();
   }
   return audioCtx;
 }
 
 export function playFlowerChime(pitchModifier = 1) {
+  if (isMutedGlobally) return;
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -50,6 +76,7 @@ export function playFlowerChime(pitchModifier = 1) {
 }
 
 export function playGentleSparkle() {
+  if (isMutedGlobally) return;
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -76,6 +103,7 @@ export function playGentleSparkle() {
 }
 
 export function playCelestialChime() {
+  if (isMutedGlobally) return;
   try {
     const ctx = getAudioContext();
     if (!ctx) return;

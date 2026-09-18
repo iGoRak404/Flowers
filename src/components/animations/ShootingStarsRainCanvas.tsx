@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { playCelestialChime } from '../../utils/audio';
+import { playCelestialChime, isGlobalMuted } from '../../utils/audio';
 
 interface ShootingStarsRainCanvasProps {
   interactive?: boolean;
@@ -33,10 +33,10 @@ interface FallingStardust {
 }
 
 /**
- * Motor de lluvia de estrellas ultra-optimizado sin lag:
- * - Pool de objetos estático (cero asignaciones / sin garbage collection en el bucle)
- * - Trazo directo por coordenadas
- * - 60 FPS garantizado en dispositivos móviles y de escritorio
+ * Motor de lluvia de estrellas ultra-optimizado para móviles y escritorio:
+ * - Pool de objetos estático (cero garbage collection en render)
+ * - Límites adaptados a pantalla pequeña para mantener 60 FPS estables
+ * - Redimensionado con debounce y control de silencio global
  */
 export const ShootingStarsRainCanvas: React.FC<ShootingStarsRainCanvasProps> = ({
   interactive = true,
@@ -55,9 +55,9 @@ export const ShootingStarsRainCanvas: React.FC<ShootingStarsRainCanvasProps> = (
 
     const isMobile = window.innerWidth < 640;
 
-    // Ángulo fijo diagonal (~48 grados) para evitar cálculos trigonométricos por fotograma
-    const cosAngle = 0.7071; // cos(45°)
-    const sinAngle = 0.7071; // sin(45°)
+    // Ángulo fijo diagonal (~45 grados) para evitar cálculos trigonométricos por fotograma
+    const cosAngle = 0.7071;
+    const sinAngle = 0.7071;
 
     const starPalettes = [
       { trail: '#fde047', head: '#ffffff' }, // Oro luminoso
@@ -66,20 +66,20 @@ export const ShootingStarsRainCanvas: React.FC<ShootingStarsRainCanvasProps> = (
       { trail: '#fbbf24', head: '#ffffff' }, // Ámbar cálido
     ];
 
-    // 1. POOL FIJO DE ESTRELLAS FUGACES (Sin 'push' ni 'splice' por fotograma)
-    const MAX_STARS = isMobile ? 10 : 18;
+    // 1. POOL FIJO DE ESTRELLAS FUGACES (Reducido en móvil para 60 FPS fijos)
+    const MAX_STARS = isMobile ? 5 : 14;
     const stars: ShootingStar[] = new Array(MAX_STARS);
 
     const resetStar = (s: ShootingStar, initialDelay = 0) => {
       const palette = starPalettes[Math.floor(Math.random() * starPalettes.length)];
       s.x = Math.random() * (width + 200) - 200;
       s.y = -60 - Math.random() * 150;
-      s.len = 70 + Math.random() * (isMobile ? 70 : 120);
-      s.speed = 10 + Math.random() * (isMobile ? 8 : 12);
+      s.len = 60 + Math.random() * (isMobile ? 60 : 110);
+      s.speed = 10 + Math.random() * (isMobile ? 6 : 10);
       s.maxAlpha = 0.6 + Math.random() * 0.4;
       s.alpha = 0.1;
       s.fadeSpeed = 0.015 + Math.random() * 0.015;
-      s.width = 1.2 + Math.random() * 1.3;
+      s.width = 1.1 + Math.random() * 1.2;
       s.color = palette.trail;
       s.headColor = palette.head;
       s.active = false;
@@ -99,23 +99,23 @@ export const ShootingStarsRainCanvas: React.FC<ShootingStarsRainCanvasProps> = (
         color: '',
         headColor: '',
         active: false,
-        delay: Math.floor(Math.random() * 90),
+        delay: Math.floor(Math.random() * 80),
       };
-      resetStar(stars[i], Math.floor(Math.random() * 120));
+      resetStar(stars[i], Math.floor(Math.random() * 100));
     }
 
-    // 2. POOL FIJO DE POLVO ESTELAR CAYENDO SUAVEMENTE (Lluvia de motas estelares)
-    const MAX_DUST = isMobile ? 18 : 34;
+    // 2. POOL FIJO DE POLVO ESTELAR CAYENDO SUAVEMENTE
+    const MAX_DUST = isMobile ? 10 : 22;
     const dustPool: FallingStardust[] = new Array(MAX_DUST);
     const dustColors = ['#ffffff', '#fef08a', '#fde047', '#7dd3fc', '#fef9c3'];
 
     const resetDust = (d: FallingStardust, startY?: number) => {
       d.x = Math.random() * width;
       d.y = startY !== undefined ? startY : Math.random() * height;
-      d.speedY = 0.4 + Math.random() * 1.1;
-      d.speedX = 0.2 + Math.random() * 0.6;
-      d.size = 1.0 + Math.random() * 2.2;
-      d.alpha = 0.3 + Math.random() * 0.6;
+      d.speedY = 0.4 + Math.random() * 0.9;
+      d.speedX = 0.2 + Math.random() * 0.5;
+      d.size = 1.0 + Math.random() * 2.0;
+      d.alpha = 0.3 + Math.random() * 0.5;
       d.twinklePhase = Math.random() * Math.PI * 2;
       d.twinkleSpeed = 0.03 + Math.random() * 0.05;
       d.color = dustColors[Math.floor(Math.random() * dustColors.length)];
@@ -136,27 +136,38 @@ export const ShootingStarsRainCanvas: React.FC<ShootingStarsRainCanvasProps> = (
       resetDust(dustPool[i]);
     }
 
-    // Manejo de redimensionado sin lag
+    // Redimensionado con debounce (evita reajustes de buffer en cada microevento)
+    let resizeTimer: NodeJS.Timeout | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, 120);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    // Disparar estrella fugaz al interactuar (toque/clic)
+    // Disparar estrella fugaz al interactuar respetando silencio global y throttle
+    let lastInteractTime = 0;
     const handleSpawnInteractiveStar = (clientX: number, clientY: number) => {
       if (!interactive) return;
-      playCelestialChime();
+      const now = Date.now();
+      if (now - lastInteractTime < 200) return;
+      lastInteractTime = now;
+
+      if (!isGlobalMuted()) {
+        playCelestialChime();
+      }
 
       // Buscar una estrella inactiva en el pool
       for (let i = 0; i < MAX_STARS; i++) {
         const s = stars[i];
         if (!s.active) {
-          s.x = Math.max(20, clientX - 120);
-          s.y = Math.max(-20, clientY - 140);
-          s.len = 120 + Math.random() * 60;
-          s.speed = 15 + Math.random() * 5;
+          s.x = Math.max(20, clientX - 100);
+          s.y = Math.max(-20, clientY - 120);
+          s.len = 100 + Math.random() * 50;
+          s.speed = 14 + Math.random() * 4;
           s.alpha = 1.0;
           s.maxAlpha = 1.0;
           s.active = true;

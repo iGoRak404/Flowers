@@ -277,6 +277,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(245, 158, 11, 0.22);
+  will-change: transform, opacity;
 }
 
 .glass-panel-subtle {
@@ -284,5 +285,36 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(251, 191, 36, 0.15);
+  will-change: transform, opacity;
+}
+
+/* OPTIMIZACIÓN DE RENDIMIENTO PARA MÓVILES (Evita caídas de FPS) */
+@media (max-width: 640px) {
+  .glass-panel {
+    background: rgba(24, 18, 12, 0.94);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  }
+
+  .glass-panel-subtle {
+    background: rgba(30, 22, 15, 0.92);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+  }
+
+  /* Desactivar pulsación continua de sombras pesadas en celular */
+  .golden-card-glow {
+    animation: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(245, 158, 11, 0.25) !important;
+  }
+
+  /* Limitar filtros y transformaciones costosas */
+  .animate-bouquet-glow {
+    animation: none !important;
+    filter: drop-shadow(0 8px 18px rgba(245, 158, 11, 0.35)) !important;
+  }
 }
 

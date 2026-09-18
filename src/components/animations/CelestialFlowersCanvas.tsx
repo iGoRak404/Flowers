@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { playCelestialChime } from '../../utils/audio';
+import { playCelestialChime, isGlobalMuted } from '../../utils/audio';
 
 interface CelestialFlowersCanvasProps {
   interactive?: boolean;
@@ -83,24 +83,29 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
     let animId: number;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = window.innerWidth < 640;
 
+    let resizeTimer: NodeJS.Timeout | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      initTwinkleStars();
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        initTwinkleStars();
+      }, 120);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     // Paletas de color radiantes para flores de Ashlie (amarillo oro con toques celestiales)
     const flowerColors = ['#fef08a', '#fde047', '#fbbf24', '#f59e0b', '#fffbeb'];
     const starColors = ['#ffffff', '#fef08a', '#7dd3fc', '#38bdf8', '#fde047'];
 
-    // 1. Estrellas de fondo centelleantes
+    // 1. Estrellas de fondo centelleantes (reducidas en móvil)
     let twinkleStars: TwinkleStar[] = [];
     const initTwinkleStars = () => {
       twinkleStars = [];
-      const count = Math.floor((width * height) / 10000);
+      const count = isMobile ? 18 : Math.floor((width * height) / 10000);
       for (let i = 0; i < count; i++) {
         twinkleStars.push({
           x: Math.random() * width,
@@ -116,7 +121,7 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
     initTwinkleStars();
 
     // 2. Flores y pétalos amarillos flotantes
-    const flowerCount = window.innerWidth < 640 ? 28 : 46;
+    const flowerCount = isMobile ? 12 : 36;
     const flowers: CelestialFlower[] = [];
 
     const createFlower = (startY?: number): CelestialFlower => {
@@ -194,17 +199,19 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
     const handleInteraction = (clientX: number, clientY: number) => {
       if (!interactive) return;
 
-      playCelestialChime();
+      if (!isGlobalMuted()) {
+        playCelestialChime();
+      }
 
       // Crear brote de flor resplandeciente en el punto de contacto
       interactiveBlooms.push({
         x: clientX,
         y: clientY,
         size: 2,
-        maxSize: 22 + Math.random() * 10,
+        maxSize: 20 + Math.random() * 8,
         rotation: Math.random() * Math.PI * 2,
         alpha: 1.0,
-        decay: 0.012,
+        decay: 0.015,
         color: '#fef08a',
         coreColor: '#92400e',
       });
@@ -213,15 +220,16 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
       spawnShootingStar(Math.max(20, clientX - 150), Math.max(10, clientY - 200));
 
       // Explosión de chispitas estelares alrededor
-      for (let i = 0; i < 14; i++) {
-        const ang = (i / 14) * Math.PI * 2 + Math.random() * 0.2;
-        const spd = 2 + Math.random() * 3.5;
+      const burst = isMobile ? 6 : 14;
+      for (let i = 0; i < burst; i++) {
+        const ang = (i / burst) * Math.PI * 2;
+        const spd = 2 + Math.random() * 3;
         stardustTrails.push({
           x: clientX,
           y: clientY,
           vx: Math.cos(ang) * spd,
           vy: Math.sin(ang) * spd,
-          size: 2 + Math.random() * 3,
+          size: 2 + Math.random() * 2.5,
           alpha: 1.0,
           decay: 0.025 + Math.random() * 0.02,
           color: i % 2 === 0 ? '#fde047' : '#38bdf8',
@@ -243,9 +251,9 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
       }
     };
 
-    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousedown', onMouseDown, { passive: true });
     window.addEventListener('touchstart', onTouchStart, { passive: true });
 
     // Dibujo de flor completa de 6 u 8 pétalos
@@ -256,9 +264,11 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
       ctx.scale(1, Math.max(0.2, Math.sin(f.flip)));
       ctx.globalAlpha = f.opacity;
 
-      // Resplandor cálido
-      ctx.shadowColor = '#f59e0b';
-      ctx.shadowBlur = 6;
+      // Resplandor cálido (desactivado en móvil para 60 FPS)
+      if (!isMobile) {
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 6;
+      }
 
       const count = f.petals;
       for (let i = 0; i < count; i++) {
@@ -430,8 +440,10 @@ export const CelestialFlowersCanvas: React.FC<CelestialFlowersCanvasProps> = ({
         ctx.save();
         ctx.globalAlpha = s.alpha;
         ctx.fillStyle = s.color;
-        ctx.shadowColor = s.color;
-        ctx.shadowBlur = 6;
+        if (!isMobile) {
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = 4;
+        }
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fill();

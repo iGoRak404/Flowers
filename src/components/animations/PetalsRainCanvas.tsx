@@ -26,16 +26,21 @@ export const PetalsRainCanvas: React.FC<PetalsRainCanvasProps> = ({ interactive 
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = window.innerWidth < 640;
 
+    let resizeTimer: NodeJS.Timeout | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, 120);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    // Cantidad balanceada según el tamaño de pantalla
-    const count = Math.min(Math.floor((width * height) / 14000), 85);
+    // Cantidad balanceada según el tamaño de pantalla (ligero en móviles)
+    const count = isMobile ? 14 : Math.min(Math.floor((width * height) / 18000), 50);
 
     const createPetal = (startY?: number): Particle => {
       return {

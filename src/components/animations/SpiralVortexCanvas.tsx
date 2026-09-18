@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { playGentleSparkle } from '../../utils/audio';
+import { playGentleSparkle, isGlobalMuted } from '../../utils/audio';
 
 interface SpiralVortexCanvasProps {
   interactive?: boolean;
@@ -41,16 +41,21 @@ export const SpiralVortexCanvas: React.FC<SpiralVortexCanvasProps> = ({ interact
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = window.innerWidth < 640;
 
+    let resizeTimer: NodeJS.Timeout | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, 120);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    const arms = 6;
-    const petalsPerArm = Math.min(Math.floor((width * height) / 20000), 24);
+    const arms = isMobile ? 3 : 6;
+    const petalsPerArm = isMobile ? 5 : Math.min(Math.floor((width * height) / 20000), 18);
     const totalPetals = arms * petalsPerArm;
 
     const goldColors = ['#fef08a', '#fde047', '#fbbf24', '#f59e0b', '#d97706'];
@@ -169,8 +174,10 @@ export const SpiralVortexCanvas: React.FC<SpiralVortexCanvasProps> = ({ interact
         ctx.save();
         ctx.globalAlpha = s.alpha;
         ctx.fillStyle = s.color;
-        ctx.shadowColor = '#f59e0b';
-        ctx.shadowBlur = 6;
+        if (!isMobile) {
+          ctx.shadowColor = '#f59e0b';
+          ctx.shadowBlur = 5;
+        }
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fill();
@@ -188,7 +195,7 @@ export const SpiralVortexCanvas: React.FC<SpiralVortexCanvasProps> = ({ interact
       targetCenterX = x;
       targetCenterY = y;
 
-      if (Math.random() < 0.35) {
+      if (Math.random() < 0.35 && stardust.length < (isMobile ? 12 : 30)) {
         stardust.push({
           x,
           y,
@@ -204,14 +211,17 @@ export const SpiralVortexCanvas: React.FC<SpiralVortexCanvasProps> = ({ interact
 
     const handlePointerDown = (x: number, y: number) => {
       if (!interactive) return;
-      playGentleSparkle();
+      if (!isGlobalMuted()) {
+        playGentleSparkle();
+      }
       targetCenterX = x;
       targetCenterY = y;
 
       // Estallido de pétalos radiales
-      for (let i = 0; i < 18; i++) {
-        const ang = (Math.PI * 2 * i) / 18;
-        const spd = 2 + Math.random() * 4;
+      const count = isMobile ? 8 : 16;
+      for (let i = 0; i < count; i++) {
+        const ang = (Math.PI * 2 * i) / count;
+        const spd = 2 + Math.random() * 3;
         stardust.push({
           x,
           y,
