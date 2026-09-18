@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { LogOut, Sparkles, Volume2, VolumeX, Flower2, Mail, RotateCcw, Music, Play, Pause, RefreshCw } from 'lucide-react';
+import { LogOut, Sparkles, Volume2, VolumeX, Flower2, Mail, RotateCcw, Music } from 'lucide-react';
 import { UserConfig, AnimationType } from '../types';
 import { playFlowerChime, playGentleSparkle } from '../utils/audio';
 import { HeroBouquet } from './HeroBouquet';
@@ -35,87 +35,71 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   const nextParticleId = useRef(0);
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
-  // Estado del reproductor local de audio para Keisy (ad-free)
+  // Audio automático de fondo para Keisy (ad-free)
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isAudioMuted, setIsAudioMuted] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(24);
-  const [audioError, setAudioError] = useState<boolean>(false);
 
-  // Sincronización del audio local con el botón de silencio global
+  // Reproducción automática de audio al ingresar al perfil de Keisy
   useEffect(() => {
-    if (audioRef.current) {
-      const shouldMute = !soundEnabled || isAudioMuted;
-      audioRef.current.muted = shouldMute;
-      audioRef.current.volume = shouldMute ? 0 : 1;
-      if (!soundEnabled && isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
+    if (user.username.toLowerCase() !== 'keisy') return;
+
+    let isCancelled = false;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Sincronizar estado inicial de volumen y silencio
+    audio.muted = !soundEnabled;
+    audio.volume = soundEnabled ? 1 : 0;
+
+    const startAudio = () => {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            if (!isCancelled) {
+              setIsPlaying(true);
+            }
+          })
+          .catch(() => {
+            // Si las políticas de autoplay del navegador requieren un toque inicial
+            const playOnFirstTouch = () => {
+              if (audioRef.current && !isCancelled) {
+                audioRef.current.muted = !soundEnabled;
+                audioRef.current.volume = soundEnabled ? 1 : 0;
+                audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+              }
+              window.removeEventListener('pointerdown', playOnFirstTouch);
+              window.removeEventListener('touchstart', playOnFirstTouch);
+              window.removeEventListener('click', playOnFirstTouch);
+            };
+            window.addEventListener('pointerdown', playOnFirstTouch, { once: true, passive: true });
+            window.addEventListener('touchstart', playOnFirstTouch, { once: true, passive: true });
+            window.addEventListener('click', playOnFirstTouch, { once: true, passive: true });
+          });
+      }
+    };
+
+    startAudio();
+
+    return () => {
+      isCancelled = true;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    };
+  }, [user.username]);
+
+  // Sincronización continua de silencio con el control general de sonido
+  useEffect(() => {
+    if (audioRef.current && user.username.toLowerCase() === 'keisy') {
+      audioRef.current.muted = !soundEnabled;
+      audioRef.current.volume = soundEnabled ? 1 : 0;
+      if (soundEnabled && audioRef.current.paused) {
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
       }
     }
-  }, [soundEnabled, isAudioMuted, isPlaying]);
-
-  // Manejo de reproducción / pausa local
-  const handleTogglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      const shouldMute = !soundEnabled || isAudioMuted;
-      audio.muted = shouldMute;
-      audio.volume = shouldMute ? 0 : 1;
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          setAudioError(false);
-        })
-        .catch(() => {
-          setAudioError(true);
-        });
-    }
-  };
-
-  // Manejo de silencio / desmutear local (manipula audio.muted y audio.volume)
-  const handleToggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const nextMuted = !audio.muted;
-    audio.muted = nextMuted;
-    audio.volume = nextMuted ? 0 : 1;
-    setIsAudioMuted(nextMuted);
-  };
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current && Number.isFinite(audioRef.current.duration)) {
-      setDuration(audioRef.current.duration);
-    }
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = parseFloat(e.target.value);
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      setCurrentTime(time);
-    }
-  };
-
-  const formatTime = (secs: number) => {
-    if (!Number.isFinite(secs) || isNaN(secs)) return '0:00';
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  };
+  }, [soundEnabled, user.username]);
 
   // Función universal para iniciar o reiniciar la secuencia
   const runSequence = () => {
@@ -301,103 +285,47 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               </blockquote>
             </div>
 
-            {/* REPRODUCTOR DE AUDIO LOCAL PARA KEISY: SIN ANUNCIOS NI EMBEDS EXTERNOS */}
+            {/* REPRODUCCIÓN AUTOMÁTICA DE MÚSICA DE FONDO PARA KEISY (SIN BOTÓN DE PLAY/PAUSA) */}
             {user.username.toLowerCase() === 'keisy' && (
-              <div className="my-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/15 border border-amber-400/40 shadow-xl text-left">
-                {/* Elemento de audio local nativo */}
+              <div
+                id="keisy-auto-player"
+                className="my-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/15 border border-amber-400/35 shadow-lg flex items-center justify-between gap-3 text-left"
+              >
+                {/* Elemento de audio nativo configurado para reproducirse automáticamente con la canción completa */}
                 <audio
                   ref={audioRef}
                   id="keisy-audio-element"
-                  src="assets/audio/youth_stray_kids.mp3"
-                  preload="metadata"
-                  onTimeUpdate={handleTimeUpdate}
-                  onLoadedMetadata={handleLoadedMetadata}
-                  onEnded={() => setIsPlaying(false)}
+                  src="/assets/audio/youth_stray_kids.mp3"
+                  autoPlay
                   loop
+                  preload="auto"
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
                 />
 
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-sm">
-                      <Music className={`w-5 h-5 ${isPlaying ? 'animate-bounce' : ''}`} />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm sm:text-base font-bold text-amber-200">Youth (청춘)</span>
-                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/25 text-amber-300 font-semibold border border-amber-400/30">
-                          Lee Know · Stray Kids
-                        </span>
-                      </div>
-                      <span className="text-xs text-amber-300/80 block mt-0.5">
-                        🎵 Audio local sin anuncios incluido para ti
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-sm shrink-0">
+                    <Music className={`w-5 h-5 text-amber-300 ${isPlaying && soundEnabled ? 'animate-bounce' : ''}`} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm sm:text-base font-bold text-amber-200 truncate">Youth (청춘)</span>
+                      <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/25 text-amber-300 font-semibold border border-amber-400/30 shrink-0">
+                        Lee Know · Stray Kids
                       </span>
                     </div>
-                  </div>
-
-                  {/* Ecualizador animado reactivo a reproducción y mute */}
-                  <div className="hidden sm:flex items-end gap-1 h-5 px-1">
-                    <span className={`w-1 bg-amber-400 rounded-full transition-all duration-300 ${isPlaying && !isAudioMuted && soundEnabled ? 'animate-[pulse_0.8s_ease-in-out_infinite] h-3' : 'h-1 opacity-40'}`} />
-                    <span className={`w-1 bg-yellow-300 rounded-full transition-all duration-300 ${isPlaying && !isAudioMuted && soundEnabled ? 'animate-[pulse_0.5s_ease-in-out_infinite_0.2s] h-5' : 'h-1.5 opacity-40'}`} />
-                    <span className={`w-1 bg-amber-400 rounded-full transition-all duration-300 ${isPlaying && !isAudioMuted && soundEnabled ? 'animate-[pulse_0.7s_ease-in-out_infinite_0.4s] h-4' : 'h-1 opacity-40'}`} />
-                    <span className={`w-1 bg-yellow-400 rounded-full transition-all duration-300 ${isPlaying && !isAudioMuted && soundEnabled ? 'animate-[pulse_0.6s_ease-in-out_infinite_0.1s] h-2' : 'h-1.5 opacity-40'}`} />
+                    <span className="text-xs text-amber-300/80 block mt-0.5 truncate">
+                      ✨ Canción completa sonando automáticamente para ti
+                    </span>
                   </div>
                 </div>
 
-                {/* Controles de reproducción con HTML5 & JS */}
-                <div className="bg-slate-950/70 p-3 sm:p-4 rounded-xl border border-amber-400/20 flex flex-col gap-2.5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      {/* Botón Play / Pausa */}
-                      <button
-                        type="button"
-                        id="keisy-play-btn"
-                        onClick={handleTogglePlay}
-                        className="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 flex items-center justify-center font-bold shadow-lg transition-transform active:scale-95 cursor-pointer"
-                        title={isPlaying ? 'Pausar audio' : 'Reproducir audio'}
-                      >
-                        {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                      </button>
-
-                      {/* Botón Mute / Unmute */}
-                      <button
-                        type="button"
-                        id="keisy-mute-btn"
-                        onClick={handleToggleMute}
-                        className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-400/25 transition-all cursor-pointer"
-                        title={isAudioMuted || !soundEnabled ? 'Activar volumen' : 'Silenciar'}
-                      >
-                        {isAudioMuted || !soundEnabled ? <VolumeX className="w-4 h-4 text-rose-300" /> : <Volume2 className="w-4 h-4 text-amber-300" />}
-                      </button>
-                    </div>
-
-                    {/* Tiempo de reproducción */}
-                    <div className="text-xs font-mono text-amber-200/90 font-medium">
-                      <span>{formatTime(currentTime)}</span>
-                      <span className="mx-1 text-amber-400/50">/</span>
-                      <span>{formatTime(duration)}</span>
-                    </div>
-                  </div>
-
-                  {/* Barra de progreso interactiva (Seek Bar) */}
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="range"
-                      id="keisy-seek-bar"
-                      min={0}
-                      max={duration || 24}
-                      step={0.1}
-                      value={currentTime}
-                      onChange={handleSeek}
-                      className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400"
-                    />
-                  </div>
-
-                  {audioError && (
-                    <div className="text-[11px] text-amber-300/80 flex items-center gap-1.5 mt-0.5">
-                      <RefreshCw className="w-3 h-3 text-amber-400 animate-spin" />
-                      <span>Presiona reproducir para autorizar el audio local en tu navegador.</span>
-                    </div>
-                  )}
+                {/* Ecualizador visual animado que baila con la música de fondo */}
+                <div className="flex items-end gap-1 h-5 px-1 shrink-0" title="Música reproduciéndose de fondo">
+                  <span className={`w-1 bg-amber-400 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.8s_ease-in-out_infinite] h-3.5' : 'h-1.5 opacity-40'}`} />
+                  <span className={`w-1 bg-yellow-300 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.5s_ease-in-out_infinite_0.2s] h-5' : 'h-2 opacity-40'}`} />
+                  <span className={`w-1 bg-amber-400 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.7s_ease-in-out_infinite_0.4s] h-4' : 'h-1.5 opacity-40'}`} />
+                  <span className={`w-1 bg-yellow-400 rounded-full transition-all duration-300 ${isPlaying && soundEnabled ? 'animate-[pulse_0.6s_ease-in-out_infinite_0.1s] h-3' : 'h-1 opacity-40'}`} />
                 </div>
               </div>
             )}
