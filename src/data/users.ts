@@ -76,7 +76,7 @@ export const USERS_CONFIG: UserConfig[] = [
     username: 'julieth',
     password: 'Lasflores123',
     displayName: 'Julieth',
-    customMessage: 'No podía dejar pasar este día sin entregarte tu flor amarilla. Eres de esas personas que irradian una luz única y cuya compañía siempre se siente cálida y sincera.\n\nQuería aprovechar este detalle para agradecerte por tu cariño, por las risas compartidas y por ser alguien en quien se puede confiar y con quien da gusto hablar de todo un poco. Las personas especiales merecen momentos especiales, y tú sin duda eres una de ellas.\n\nEspero que disfrutes muchísimo este día, que la vida te siga llenando de bendiciones y cosas maravillosas. ¡Un abrazo gigante y feliz día de las flores amarillas, Julieth!',
+    customMessage: 'Quería darte esta florecita amarilla para recordarte cuánto te quiero. A veces entre la rutina y el corre corre de los días no se dice tan seguido, pero de verdad valoro un montón que seas mi prima y tenerte en la familia.\n\nSiempre es chévere compartir contigo, hablar de lo que sea, reírnos y saber que siempre podemos contar el uno con el otro como la familia que somos. Gracias por tu cariño, por tu buena vibra y por estar siempre presente.\n\nEspero que hoy tengas un día muy bonito, que te consientan bastante y que este pequeño detalle te saque una buena sonrisa. ¡Te quiero muchísimo, primita! Feliz día de las flores amarillas.',
     animationType: 'crystal_petals',
     roleDescription: 'Animación Julieth: Cristales Florales Dorados, Mandalas Luminosos y Destellos',
     avatarSeed: '💐'

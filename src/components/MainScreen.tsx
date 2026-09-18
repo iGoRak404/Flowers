@@ -269,19 +269,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
             {/* Sello de la Carta */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-yellow-500/15 to-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-semibold mb-4 shadow-sm">
               <Mail className="w-3.5 h-3.5 text-amber-400" />
-              <span>
-                {
-                  {
-                    leslie: 'Carta de Carlos',
-                    ashlie: 'Carta de Carlos',
-                    nata: 'Carta de Carlos',
-                    naty: 'Carta de Carlos',
-                    ange: 'Carta de Carlos',
-                    ronald: 'Carta de Carlos',
-                    keisy: 'Carta de Carlos',
-                  }[user?.username?.toLowerCase()] || `Carta para ${user?.displayName || 'ti'}`
-                }
-              </span>
+              <span>Carta de Carlos</span>
             </div>
 
             {/* Saludo Principal */}
