@@ -34,7 +34,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({ onLoginSuccess }) => {
     setTimeout(() => {
       const foundUser = USERS_CONFIG.find(
         (u) =>
-          u.username.toLowerCase() === cleanUser &&
+          (u.username.toLowerCase() === cleanUser || (u.username.toLowerCase() === 'vane' && cleanUser === 'naty')) &&
           u.password.toLowerCase() === cleanPass.toLowerCase()
       );
 

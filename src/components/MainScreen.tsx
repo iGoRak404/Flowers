@@ -30,6 +30,11 @@ const PROFILE_SONGS: Record<string, { title: string; artist: string; src: string
     artist: 'Lee Know · Stray Kids',
     src: '/assets/audio/youth_stray_kids.mp3',
   },
+  vane: {
+    title: 'Could Have Been Me',
+    artist: 'Halsey (Porsha) · Sing 2',
+    src: '/assets/audio/could_have_been_me_sing2.mp3',
+  },
   naty: {
     title: 'Could Have Been Me',
     artist: 'Halsey (Porsha) · Sing 2',

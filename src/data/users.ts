@@ -55,12 +55,12 @@ export const USERS_CONFIG: UserConfig[] = [
     avatarSeed: '🌻'
   },
   {
-    username: 'naty',
+    username: 'vane',
     password: 'Lasflores123',
-    displayName: 'Naty',
+    displayName: 'Vane',
     customMessage: 'Quería darte esta florecita para agradecerte por siempre estar ahí y por ser una persona con la que sé que puedo contar. Te quiero muchísimo y, aunque seas mi prima, para mí siempre has sido como una hermanita.\n\nHemos pasado por un montón de momentos juntos, hemos hablado, nos hemos reído y seguramente también hemos tenido nuestras pequeñas peleas por las bobadas más absurdas JAJAJA, porque obviamente ser familia también incluye molestarse mutuamente.\n\nGracias por estar presente y por todo el cariño que siempre me has dado. Puede que no te lo diga todos los días, pero de verdad valoro muchísimo tenerte en mi vida y espero que siempre podamos seguir contando el uno con el otro.',
     animationType: 'petals_rain',
-    roleDescription: 'Efecto Naty: Lluvia primaveral de pétalos con canción Could Have Been Me (Sing 2)',
+    roleDescription: 'Efecto Vane: Lluvia primaveral de pétalos con canción Could Have Been Me (Sing 2)',
     avatarSeed: '🌸'
   },
   {
@@ -89,15 +89,6 @@ export const USERS_CONFIG: UserConfig[] = [
     animationType: 'sunburst_dandelions',
     roleDescription: 'Animación Skarlet: Dientes de León Dorados y Pulsos Solares con canción Lugar Seguro',
     avatarSeed: '💛'
-  },
-  {
-    username: 'ronald',
-    password: 'Lasflores123',
-    displayName: 'Ronald',
-    customMessage: 'Ronald, las flores amarillas son símbolo de lealtad, éxito y energía positiva. Gracias por tu amistad firme y tu apoyo constante. Que la prosperidad y grandes victorias acompañen cada paso que des.',
-    animationType: 'spiral_vortex',
-    roleDescription: 'Animación: Vórtice Galáctico de Flores Cósmicas',
-    avatarSeed: '🌟'
   }
 ];
 

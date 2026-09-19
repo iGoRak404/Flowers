@@ -79,14 +79,14 @@ export default function App() {
           {activeAnimation === 'aurora_flowers' && <AuroraFlowersCanvas interactive={true} />}
           {activeAnimation === 'crystal_petals' && <CrystalPetalsCanvas interactive={true} />}
           {activeAnimation === 'sunburst_dandelions' && <SunburstDandelionsCanvas interactive={true} />}
-          {/* Mariposas doradas: para Ange, Keisy, Leslie, Naty, Nata, Siel, Julieth y Skarlet */}
+          {/* Mariposas doradas: para Ange, Keisy, Leslie, Vane, Nata, Siel, Julieth y Skarlet */}
           {(activeAnimation === 'golden_butterflies' ||
-            ['keisy', 'leslie', 'naty', 'nata', 'siel', 'julieth', 'skarlet'].includes(currentUser.username.toLowerCase())) && (
+            ['keisy', 'leslie', 'vane', 'naty', 'nata', 'siel', 'julieth', 'skarlet'].includes(currentUser.username.toLowerCase())) && (
             <GoldenButterfliesCanvas interactive={true} />
           )}
 
           {/* Lluvia de estrellas fugaces y asteroides sin lag: para perfiles con temática mágica */}
-          {['keisy', 'naty', 'nata', 'leslie', 'ashlie', 'ange', 'siel', 'julieth', 'skarlet'].includes(currentUser.username.toLowerCase()) && (
+          {['keisy', 'vane', 'naty', 'nata', 'leslie', 'ashlie', 'ange', 'siel', 'julieth', 'skarlet'].includes(currentUser.username.toLowerCase()) && (
             <ShootingStarsRainCanvas interactive={true} />
           )}
         </>
